@@ -1,0 +1,13 @@
+# Ignore uploaded files
+upload/*.*
+php_error.log
+#config
+include/config.inc.php
+#Grunt
+Gruntfile.js
+package.json
+node_modules/
+# Ignore _design folder
+_design
+#Locale
+locales/saved
