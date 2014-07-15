@@ -1,0 +1,104 @@
+@import url('structure.css');
+
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+
+	font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+	font-weight: 400;
+}
+
+.btn-default {
+
+	background-color: #474949;
+	border-color: #474949;
+	color: #FFFFFF;
+}
+
+.btn-default:hover,
+.btn-default:focus,
+.btn-default:active,
+.btn-default.active,
+.open .dropdown-toggle.btn-default {
+
+	background-color: #333434;
+	border-color: #292A2A;
+	color: #FFFFFF;
+}
+
+.btn-default.disabled,
+.btn-default.disabled.active,
+.btn-default[disabled].active,
+fieldset[disabled] .btn-default.active {
+
+	background-color: #474949;
+	border-color: #474949;
+ }
+
+.btn-default .caret {
+
+	border-top-color: #FFFFFF;
+}
+
+section.content h2 {
+
+	margin-top: 0;
+}
+
+table tr td span.block {
+
+	display: block;
+}
+
+table tr td span.block small {
+
+	display: block;
+}
+
+/* 	    __                _
+	   / /   ____  ____ _(_)___
+	  / /   / __ \/ __ `/ / __ \
+	 / /___/ /_/ / /_/ / / / / /
+	/_____/\____/\__, /_/_/ /_/
+	            /____/           */
+
+.users.login-page .wrapper {
+
+	margin-bottom: -5px;
+}
+
+.users.login-page .footer,
+.users.login-page .push {
+
+	height: 5px;
+}
+
+.users.login-page .checkbox {
+
+	font-weight: normal;
+}
+.users.login-page .form-control {
+
+	position: relative;
+	font-size: 16px;
+	height: auto;
+	padding: 10px;
+	/* box-sizing */
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+.users.login-page .form-control:focus {
+
+	z-index: 2;
+}
+.users.login-page input[type="text"] {
+
+	margin-bottom: -1px;
+	border-bottom-left-radius: 0;
+	border-bottom-right-radius: 0;
+}
+.users.login-page input[type="password"] {
+
+	margin-bottom: 10px;
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
+}
