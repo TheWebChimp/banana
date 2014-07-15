@@ -52,8 +52,8 @@
 					<div class="col-md-8">
 						<?php
 							$category = ToDoTags::get($cat);
-							$pending = $category->count("t.status = 'Pending'");
-							$done = $category->count("t.status = 'Done'");
+							$pending = $category ? $category->count("t.status = 'Pending'") : 0;
+							$done = $category ? $category->count("t.status = 'Done'") : 0;
 						?>
 						<h3>Available tasks</h3>
 						<?php if ( Users::currentUserCan('manage_options') ): ?>
