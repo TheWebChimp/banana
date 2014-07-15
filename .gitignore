@@ -1,5 +1,5 @@
 # Ignore uploaded files
-upload/*.*
+upload/
 php_error.log
 #config
 include/config.inc.php
