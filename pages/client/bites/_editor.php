@@ -56,7 +56,7 @@
 							<a href="#" class="btn btn-default btn-theme" data-theme="monokai">Dark theme</a>
 						</div>
 						<div class="pull-right">
-							<a href="#" class="btn btn-default btn-copy"><i class="fa fa-clipboard"></i> Copy</a>
+							<!-- <a href="#" class="btn btn-default btn-copy"><i class="fa fa-clipboard"></i> Copy</a> -->
 							<a href="#" class="btn btn-default" data-toggle="fullscreen"><i class="fa fa-desktop"></i> Fullscreen editor</a>
 						</div>
 					</div>

@@ -34,6 +34,16 @@ ClientModuleBites = Class.extend({
 				el.addClass('active');
 			}
 		});
+
+		$(".btn-copy").zclip({
+			path: constants.siteUrl + '/assets/ZeroClipboard.swf',
+			copy:$('#content').val(),
+			afterCopy: function(){
+				$.alert('The bite contents have been copied to the clipboard');
+			}
+		});
+			
+		
 	}
 });
 
@@ -334,6 +344,7 @@ Client = Class.extend({
 			}
 			return true;
 		};
+		window.ZeroClipboard = ZeroClipboard;
 	},
 	onReady: function() {
 		var obj = this;

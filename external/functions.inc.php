@@ -29,8 +29,9 @@
 	$site->registerScript('dropzone', $site->baseUrl('/js/dropzone.js'), array('jquery') );
 	$site->registerScript('jquery-ui', $site->baseUrl('/js/jquery-ui-1.10.3.min.js'), array('jquery') );
 	$site->registerScript('jquery.plugins', $site->baseUrl('/js/jquery.plugins.js'), array('jquery') );
-	$site->registerScript('jquery.lazyload', $site->baseUrl('/js/jquery.lazyload.min.js'), array('jquery') );
-	$site->registerScript('banana.client', $site->baseUrl('/js/banana.client.js'), array('codemirror', 'class', 'marked', 'jquery.plugins', 'canvasjs', 'jquery.lazyload', 'jquery.form', 'twitter-bootstrap') );
+	$site->registerScript('jquery.lazyload', $site->baseUrl('/js/jquery.lazyload.min.js'), array('jquery') );	
+	$site->registerScript('jquery.zclip', $site->baseUrl('/js/jquery.zclip.min.js'), array('jquery') );
+	$site->registerScript('banana.client', $site->baseUrl('/js/banana.client.js'), array('codemirror', 'class', 'marked', 'jquery.plugins', 'canvasjs', 'jquery.lazyload', 'jquery.form', 'twitter-bootstrap', 'jquery.zclip') );
 	$site->registerScript('banana.admin', $site->baseUrl('/js/banana.admin.js'), array('codemirror', 'class', 'jquery.plugins', 'canvasjs', 'jquery.lazyload', 'jquery.form', 'dropzone', 'jquery-ui', 'xtag-components', 'twitter-bootstrap') );
 
 	# Include extra files

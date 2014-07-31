@@ -15,12 +15,13 @@
 				<div class="media">
 					<img class="media-object pull-left img-circle" src="<?php echo get_gravatar($creator->email, 42); ?>" alt="">
 					<div class="media-body">
-						<?php if ($creator->id == $site->user->id): ?>
 						<div class="media-actions pull-right">
+							<a href="#" class="btn btn-primary btn-copy"><i class="fa fa-clipboard"></i> Copy</a>
+							<?php if ($creator->id == $site->user->id): ?>
 							<a href="<?php $site->urlTo("/bites/edit/{$bite->id}", true); ?>" class="btn btn-success"><i class="fa fa-pencil"></i> Edit Bite</a>
 							<a href="<?php $site->urlTo("/bites/edit/{$bite->id}", true); ?>" class="btn btn-danger"><i class="fa fa-trash-o"></i> Delete</a>
+							<?php endif; ?>
 						</div>
-						<?php endif; ?>
 						<p class="media-heading">
 							<?php echo $creator->nickname; ?><span class="text-muted"> / </span><a href="<?php $site->urlTo("/bites/{$bite->id}", true); ?>"><?php echo $bite->name; ?></a><br>
 							<small class="text-muted">Created <?php echo relative_time( $bite->created ); ?></small>
