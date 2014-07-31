@@ -62,6 +62,7 @@
 	include $site->baseDir('/external/model/attachment.model.php');
 	include $site->baseDir('/external/model/keyring.model.php');
 	include $site->baseDir('/external/model/todo.model.php');
+	include $site->baseDir('/external/model/contact.model.php');
 
 	# Views
 	include $site->baseDir('/external/view/client.view.php');
@@ -77,6 +78,7 @@
 	include $site->baseDir('/external/controller/client/todo.controller.php');
 	include $site->baseDir('/external/controller/client/tickets.controller.php');
 	include $site->baseDir('/external/controller/client/keyring.controller.php');
+	include $site->baseDir('/external/controller/client/contact.controller.php');
 
 	# MVC overrides
 	$site->mvc->setDefaultController('client');
