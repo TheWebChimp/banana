@@ -7,6 +7,36 @@ ClientModule = Class.extend({
 	}
 });
 
+ClientModuleBites = Class.extend({
+	onInit: function() {
+		//
+	},
+	onReady: function() {
+		var obj = this;
+		//
+		$('select[name=syntax]').on('change', function() {
+			var el = $(this),
+				val = el.val(),
+				codemirror = $('.codemirror'),
+				editor = codemirror.data('editor');
+			editor.setOption("mode", val);
+		});
+
+		$('.btn-theme').on('click', function(e) {
+			e.preventDefault();
+			var el = $(this),
+				theme = el.data('theme'),
+				codemirror = $('.codemirror'),
+				editor = codemirror.data('editor');
+			if (! el.hasClass('active') ) {
+				editor.setOption("theme", theme);
+				$('.btn-theme').removeClass('active');
+				el.addClass('active');
+			}
+		});
+	}
+});
+
 ClientModuleKeyring = Class.extend({
 	onInit: function() {
 		//
@@ -225,6 +255,7 @@ Client = Class.extend({
 	modules: {
 		tickets: new ClientModuleTickets(),
 		keyring: new ClientModuleKeyring(),
+		bites: new ClientModuleBites(),
 		todo: new ClientModuleToDo()
 	},
 	utils: {
@@ -307,9 +338,46 @@ Client = Class.extend({
 	onReady: function() {
 		var obj = this;
 
+		$('.bites-embed .btn-menu').on('click', function(e) {
+			e.preventDefault();
+			var el = $(this),
+				media = $('.media');
+			media.toggleClass('visible');
+		});
+
+		$('.codemirror').each(function() {
+			var el = $(this),
+				mode = el.data('mode'),
+				readOnly = el.data('readonly') || false,
+				textarea = el.find('textarea');
+			var editor = CodeMirror.fromTextArea(textarea[0], {
+				styleActiveLine: true,
+				autoCloseBrackets: true,
+				matchTags: { bothTags: true },
+				matchBrackets: true,
+				// lineWrapping: true,
+				readOnly: readOnly,
+				lineNumbers: true,
+				theme: 'neo',
+				mode: mode
+			});
+			el.data('editor', editor);
+		});
+
 		$('input[name=color]').minicolors({
 			theme: 'bootstrap',
 			letterCase: 'uppercase',
+		});
+
+		$('[data-toggle=fullscreen]').on('click', function(e) {
+			var container = $('.fullscreen-container');
+			e.preventDefault();
+			container.toggleClass('active');
+			if ( container.hasClass('active') ) {
+				$('[data-toggle=fullscreen]').addClass('active');
+			} else {
+				$('[data-toggle=fullscreen]').removeClass('active');
+			}
 		});
 
 		$('[data-chart=line]').each(function() {

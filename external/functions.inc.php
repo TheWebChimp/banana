@@ -7,15 +7,17 @@
 	# Basic set-up ------------------------------------------------------------
 
 	# Include styles
-	// $site->registerStyle('webfont.open-sans', $site->baseUrl('/css/webfont.open-sans.css') );
+	$site->registerStyle('webfont.ubuntu-mono', '//fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic,700italic' );
 	$site->registerStyle('webfont.open-sans', '//fonts.googleapis.com/css?family=Open+Sans:400,400italic,700,700italic|Open+Sans+Condensed:700' );
 	$site->registerStyle('webfont.font-awesome', '//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/font-awesome.min.css' );
 	$site->registerStyle('sticky-footer', $site->baseUrl('/css/sticky-footer.css') );
 	$site->registerStyle('codemirror', $site->baseUrl('/css/codemirror.css') );
+	$site->registerStyle('codemirror.neo', $site->baseUrl('/css/codemirror.neo.css') );
+	$site->registerStyle('codemirror.monokai', $site->baseUrl('/css/codemirror.monokai.css') );
 	$site->registerStyle('dropzone', $site->baseUrl('/css/dropzone.css') );
 	$site->registerStyle('jquery.plugins', $site->baseUrl('/css/jquery.plugins.css') );
-	$site->registerStyle('banana.client', $site->baseUrl('/css/banana.client.css'), array('codemirror', 'twitter-bootstrap', 'webfont.open-sans', 'webfont.font-awesome', 'sticky-footer', 'jquery.plugins') );
-	$site->registerStyle('banana.admin', $site->baseUrl('/css/banana.admin.css'), array('codemirror', 'twitter-bootstrap', 'dropzone', 'webfont.open-sans', 'webfont.font-awesome', 'sticky-footer') );
+	$site->registerStyle('banana.client', $site->baseUrl('/css/banana.client.css'), array('codemirror', 'codemirror.monokai', 'codemirror.neo', 'twitter-bootstrap', 'webfont.open-sans', 'webfont.font-awesome', 'webfont.ubuntu-mono', 'sticky-footer', 'jquery.plugins') );
+	$site->registerStyle('banana.admin', $site->baseUrl('/css/banana.admin.css'), array('codemirror', 'codemirror.monokai', 'codemirror.neo', 'twitter-bootstrap', 'dropzone', 'webfont.open-sans', 'webfont.font-awesome', 'webfont.ubuntu-mono', 'sticky-footer') );
 
 	# Include scripts
 	$site->registerScript('xtag', $site->baseUrl('/js/x-tag.min.js') );
@@ -60,6 +62,7 @@
 	include $site->baseDir('/external/model/client.model.php');
 	include $site->baseDir('/external/model/ticket.model.php');
 	include $site->baseDir('/external/model/attachment.model.php');
+	include $site->baseDir('/external/model/bite.model.php');
 	include $site->baseDir('/external/model/keyring.model.php');
 	include $site->baseDir('/external/model/todo.model.php');
 
@@ -76,6 +79,7 @@
 	include $site->baseDir('/external/controller/admin/attachments.controller.php');
 	include $site->baseDir('/external/controller/client/todo.controller.php');
 	include $site->baseDir('/external/controller/client/tickets.controller.php');
+	include $site->baseDir('/external/controller/client/bites.controller.php');
 	include $site->baseDir('/external/controller/client/keyring.controller.php');
 
 	# MVC overrides
