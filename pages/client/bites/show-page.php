@@ -37,7 +37,7 @@
 						</div>
 					</div>
 					<div class="col-left">
-						<div class="form-group codemirror full-height" data-readonly="nocursor" data-mode="<?php echo ($bite ? $bite->syntax : ''); ?>">
+						<div class="form-group codemirror full-height" data-readonly="true" data-mode="<?php echo ($bite ? $bite->syntax : ''); ?>">
 							<textarea type="text" name="content" id="content" class="form-control"><?php echo ($bite ? $bite->content : ''); ?></textarea>
 						</div>
 					</div>
