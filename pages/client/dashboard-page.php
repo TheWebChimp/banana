@@ -15,6 +15,7 @@
 						<li><a href="<?php $site->urlTo('/tickets', true) ?>" class="btn btn-default"><i class="fa fa-ticket"></i> Tickets</a></li>
 						<li><a href="<?php $site->urlTo('/todo', true) ?>" class="btn btn-default"><i class="fa fa-calendar"></i> ToDo</a></li>
 						<li><a href="<?php $site->urlTo('/funnel', true) ?>" class="btn btn-default"><i class="fa fa-th"></i> Funnel</a></li>
+						<li><a href="<?php $site->urlTo('/bites', true) ?>" class="btn btn-default"><i class="fa fa-code"></i> Bites</a></li>
 						<li><a href="<?php $site->urlTo('/keyring', true) ?>" class="btn btn-default"><i class="fa fa-key"></i> Keyring</a></li>
 						<li><a href="<?php $site->urlTo('/contact', true) ?>" class="btn btn-default"><i class="fa fa-phone"></i> Contacts</a></li>
 					</ul>
