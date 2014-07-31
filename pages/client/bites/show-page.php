@@ -17,6 +17,7 @@
 					<div class="media-body">
 						<div class="media-actions pull-right">
 							<a href="#" class="btn btn-primary btn-copy"><i class="fa fa-clipboard"></i> Copy</a>
+							<a href="<?php $site->urlTo('/bites/new', true); ?>" class="btn btn-success"><i class="fa fa-code"></i> New bite</a>
 							<?php if ($creator->id == $site->user->id): ?>
 							<a href="<?php $site->urlTo("/bites/edit/{$bite->id}", true); ?>" class="btn btn-success"><i class="fa fa-pencil"></i> Edit Bite</a>
 							<a href="<?php $site->urlTo("/bites/edit/{$bite->id}", true); ?>" class="btn btn-danger"><i class="fa fa-trash-o"></i> Delete</a>
