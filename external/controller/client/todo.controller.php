@@ -12,15 +12,17 @@
 			global $site;
 			$request = $site->mvc->getRequest();
 			$cat = ToDoTags::get(1);
-			$todos = $cat->all();
-			$this->view->render('todo/index-page', array('todos' => $todos, 'cat' => $cat->slug));
+			$todos = $cat ? $cat->all() : NULL;
+			$slug = $cat ? $cat->slug : '';
+			$this->view->render('todo/index-page', array('todos' => $todos, 'cat' => $slug));
 		}
 
 		function showAction($id) {
 			$cat = ToDoTags::get($id);
 			$cat = $cat ? $cat : ToDoTags::get(1);
-			$todos = $cat->all();
-			$this->view->render('todo/index-page', array('todos' => $todos, 'cat' => $cat->slug));
+			$todos = $cat ? $cat->all() : NULL;
+			$slug = $cat ? $cat->slug : '';
+			$this->view->render('todo/index-page', array('todos' => $todos, 'cat' => $slug));
 		}
 
 		function newAction() {
