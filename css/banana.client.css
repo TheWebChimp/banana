@@ -726,6 +726,12 @@ textarea {
 	margin-bottom: 0;
 }
 
+.bites .pagination {
+
+	margin-top: 0;
+	float: right;
+}
+
 .bites .bite {
 
 	margin-bottom: 15px;

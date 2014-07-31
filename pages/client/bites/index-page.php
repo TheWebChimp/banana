@@ -12,9 +12,13 @@
 				</ol>
 				<div class="cols left-fixed">
 					<div class="col-left">
-						<a href="<?php $site->urlTo('/bites/new', true); ?>" class="btn btn-success"><i class="fa fa-code"></i> Create new bite</a>
+						<div class="alert alert-info">Categories and other goodies coming soon!</div>
 					</div>
 					<div class="col-right">
+						<div class="form-group">
+							<?php Pagination::paginate($total, 5); ?>
+							<a href="<?php $site->urlTo('/bites/new', true); ?>" class="btn btn-success"><i class="fa fa-code"></i> Create new bite</a>
+						</div>
 						<?php
 							foreach ($bites as $bite):
 								$creator = Users::get($bite->user_id);

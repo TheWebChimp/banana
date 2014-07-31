@@ -11,8 +11,18 @@
 		function indexAction() {
 			global $site;
 			$request = $site->mvc->getRequest();
-			$bites = Bites::rawWhere("type = 'public' OR user_id = {$site->user->id}");
-			$this->view->render('bites/index-page', array('bites' => $bites));
+			# Get parameters
+			$page = $request->get('page', '1');
+			$show = $request->get('show', '15');
+			# Sanitize
+			$page = is_numeric($page) ? $page : 1;
+			$show = is_numeric($show) ? $show : 15;
+			$offset = $show * ($page - 1);
+			# Get paged bites
+			$bites = Bites::rawWhere("type = 'public' OR user_id = {$site->user->id}", $offset, $show);
+			$total = Bites::count("type = 'public' OR user_id = {$site->user->id}");
+			# Render paged bites
+			$this->view->render('bites/index-page', array('bites' => $bites, 'total' => $total));
 		}
 
 		function newAction() {
