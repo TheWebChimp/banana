@@ -18,6 +18,8 @@
 			$page = is_numeric($page) ? $page : 1;
 			$show = is_numeric($show) ? $show : 15;
 			$offset = $show * ($page - 1);
+			# Set pagination options
+			Pagination::$show = $show;
 			# Get paged bites
 			$bites = Bites::rawWhere("type = 'public' OR user_id = {$site->user->id}", $offset, $show);
 			$total = Bites::count("type = 'public' OR user_id = {$site->user->id}");

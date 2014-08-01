@@ -16,7 +16,7 @@
 					</div>
 					<div class="col-right">
 						<div class="form-group">
-							<?php Pagination::paginate($total, 5); ?>
+							<?php Pagination::paginate($total, 5, array()); ?>
 							<a href="<?php $site->urlTo('/bites/new', true); ?>" class="btn btn-success"><i class="fa fa-code"></i> Create new bite</a>
 						</div>
 						<?php
