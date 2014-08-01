@@ -425,6 +425,8 @@ textarea {
 	border-radius: 5px 5px 0 0;
 }
 
+.tickets .form-ticket .preview-area { max-height: none; }
+
 .tickets .form-ticket .well {
 
 	margin-top: -15px;
@@ -561,6 +563,8 @@ textarea {
 	border-radius: 5px 5px 0 0;
 }
 
+.todo .form-todo .preview-area { max-height: none; }
+
 .todo .form-todo .well {
 
 	margin-top: -15px;
@@ -638,6 +642,8 @@ textarea {
 	max-height: 320px;
 	z-index: 5;
 }
+
+.form-markdown .markdown .preview-area { max-height: none; }
 
 .form-markdown .markdown {
 
