@@ -15,7 +15,7 @@
 			</div>
 		</div>
 		<a href="#" class="btn-menu"><i class="fa fa-2x fa-bars"></i></a>
-		<div class="form-group codemirror full-height" data-readonly="nocursor" data-mode="<?php echo ($bite ? $bite->syntax : ''); ?>">
+		<div class="form-group codemirror full-height" data-readonly="true" data-mode="<?php echo ($bite ? $bite->syntax : ''); ?>">
 			<textarea type="text" name="content" id="content" class="form-control"><?php echo ($bite ? $bite->content : ''); ?></textarea>
 		</div>
 	</section>
