@@ -2,6 +2,9 @@
 
 	class Pagination {
 
+		static public $show;
+		static public $page;
+
 		static function paginate($total, $visible = 5, $vars = array()) {
 			global $site;
 			$request = $site->mvc->getRequest();
@@ -10,9 +13,9 @@
 			}
 			$search = $request->param('search');
 			$filter = $request->param('filter');
-			$page = $request->get('page', 1);
-			$show = $request->get('show', 30);
-			$show = $show ? $show : 30;
+			$page = $request->get('page', self::$page);
+			$show = $request->get('show', self::$show);
+			$show = $show ? $show : self::$show;
 			$pages = ceil($total / $show);
 			$extra = '';
 			$extra .= $search ? htmlspecialchars("&search={$search}") : '';
@@ -69,5 +72,8 @@
 		}
 
 	}
+
+	Pagination::$show = 30;
+	Pagination::$page = 1;
 
 ?>
