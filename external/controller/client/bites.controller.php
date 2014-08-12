@@ -14,17 +14,23 @@
 			# Get parameters
 			$page = $request->get('page', '1');
 			$show = $request->get('show', '15');
+			$user = $request->get('user', null);
 			# Sanitize
 			$page = is_numeric($page) ? $page : 1;
 			$show = is_numeric($show) ? $show : 15;
 			$offset = $show * ($page - 1);
 			# Set pagination options
 			Pagination::$show = $show;
-			# Get paged bites
-			$bites = Bites::rawWhere("type = 'public' OR user_id = {$site->user->id}", $offset, $show);
-			$total = Bites::count("type = 'public' OR user_id = {$site->user->id}");
+			# Get filtered? and paged bites
+			if ( $user ) {
+				$bites = Bites::rawWhere("type = 'public' AND user_id = {$user}", $offset, $show);
+				$total = Bites::count("type = 'public' AND user_id = {$user}");
+			} else {
+				$bites = Bites::rawWhere("type = 'public' OR user_id = {$site->user->id}", $offset, $show);
+				$total = Bites::count("type = 'public' OR user_id = {$site->user->id}");
+			}
 			# Render paged bites
-			$this->view->render('bites/index-page', array('bites' => $bites, 'total' => $total));
+			$this->view->render('bites/index-page', array('bites' => $bites, 'total' => $total, 'user' => $user));
 		}
 
 		function newAction() {

@@ -1,5 +1,5 @@
 <?php
-	//
+	$userobj = $user ? Users::get($user) : null;
 ?>
 <?php $site->getParts(array('client/header_html', 'client/header')) ?>
 
@@ -16,9 +16,12 @@
 					</div>
 					<div class="col-right">
 						<div class="form-group">
-							<?php Pagination::paginate($total, 5, array()); ?>
+							<?php Pagination::paginate($total, 5, array('user' => $user)); ?>
 							<a href="<?php $site->urlTo('/bites/new', true); ?>" class="btn btn-success"><i class="fa fa-code"></i> Create new bite</a>
 						</div>
+						<?php if ($userobj): ?>
+							<div class="alert alert-info">Showing <?php echo $total; ?> bites from <?php echo $userobj->nickname; ?>, <a class="alert-link" href="<?php $site->urlTo('/bites', true); ?>">click here to reset filter.</a></div>
+						<?php endif; ?>
 						<?php
 							foreach ($bites as $bite):
 								$creator = Users::get($bite->user_id);
@@ -28,7 +31,7 @@
 								<img class="media-object pull-left img-circle" src="<?php echo get_gravatar($creator->email, 42); ?>" alt="">
 								<div class="media-body">
 									<p class="media-heading">
-										<?php echo $creator->nickname; ?><span class="text-muted"> / </span><a href="<?php $site->urlTo("/bites/{$bite->id}", true); ?>"><?php echo $bite->name; ?></a><br>
+										<a href="<?php $site->urlTo("/bites/?user={$bite->user_id}", true); ?>"><?php echo $creator->nickname; ?></a><span class="text-muted"> / </span><a href="<?php $site->urlTo("/bites/{$bite->id}", true); ?>"><?php echo $bite->name; ?></a><br>
 										<small class="text-muted">Created <?php echo relative_time( $bite->created ); ?></small>
 									</p>
 								</div>
