@@ -99,6 +99,34 @@
 			return $ret;
 		}
 
+		function getHistory() {
+			global $site;
+			$ret = array();
+			$dbh = $site->getDatabase();
+			$ret[] = array(
+				'event' => 'created',
+				'date' => $this->created,
+				'user' => Users::get($this->user_id)
+			);
+			try {
+				$sql = "SELECT bite_id, user_id, modified FROM banana_bites_history WHERE bite_id = :bite_id";
+				$stmt = $dbh->prepare($sql);
+				$stmt->bindValue(':bite_id', $this->id);
+				$stmt->execute();
+				$rows = $stmt->fetchAll();
+				foreach ($rows as $row) {
+					$ret[] = array(
+						'event' => 'modified',
+						'date' => $row->modified,
+						'user' => Users::get($row->user_id)
+					);
+				}
+			} catch (PDOException $e) {
+				error_log( $e->getMessage() );
+			}
+			return $ret;
+		}
+
 		function __toString() {
 			return json_encode($this);
 		}

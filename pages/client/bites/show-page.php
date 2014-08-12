@@ -1,6 +1,7 @@
 <?php
 	$creator = Users::get($bite->user_id);
 	$description = $bite->getMeta('description');
+	$history = $bite->getHistory();
 ?>
 <?php $site->getParts(array('client/header_html', 'client/header')) ?>
 
@@ -44,6 +45,18 @@
 						<div class="form-group codemirror full-height" data-readonly="true" data-mode="<?php echo ($bite ? $bite->syntax : ''); ?>">
 							<textarea type="text" name="content" id="content" class="form-control"><?php echo ($bite ? $bite->content : ''); ?></textarea>
 						</div>
+						<?php if ( $history && $bite->permissions == 'Editable' ): ?>
+						<h4>Change log</h4>
+						<ul class="text-muted list-unstyled">
+							<?php
+								foreach ($history as $item):
+							?>
+							<li><i class="fa fa-history"></i> <small><?php echo ($item['event'] == 'created' ? 'Bite ' : 'Last ') . $item['event']; ?> by <strong><?php echo $item['user']->nickname; ?></strong>, <?php echo relative_time( $item['date'] ); ?></small></li>
+							<?php
+								endforeach;
+							?>
+						</ul>
+						<?php endif; ?>
 					</div>
 				</div>
 			</div>
