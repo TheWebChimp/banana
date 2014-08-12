@@ -8,6 +8,7 @@
 		public $name;
 		public $status;
 		public $type;
+		public $permissions;
 		public $syntax;
 		public $content;
 		public $created;
@@ -28,6 +29,7 @@
 				$this->name = '';
 				$this->status = '';
 				$this->type = '';
+				$this->permissions = '';
 				$this->syntax = '';
 				$this->content = '';
 				$this->created = $now;
@@ -44,9 +46,9 @@
 			$dbh = $site->getDatabase();
 			$this->modified = date('Y-m-d H:i:s');
 			try {
-				$sql = "INSERT INTO banana_bites_bite (id, user_id, parent_id, name, status, type, syntax, content, created, updated)
-						VALUES (:id, :user_id, :parent_id, :name, :status, :type, :syntax, :content, :created, :updated)
-						ON DUPLICATE KEY UPDATE name = :name, status = :status, type = :type, syntax = :syntax, content = :content, updated = :updated";
+				$sql = "INSERT INTO banana_bites_bite (id, user_id, parent_id, name, status, type, permissions, syntax, content, created, updated)
+						VALUES (:id, :user_id, :parent_id, :name, :status, :type, :permissions, :syntax, :content, :created, :updated)
+						ON DUPLICATE KEY UPDATE name = :name, status = :status, type = :type, permissions = :permissions, syntax = :syntax, content = :content, updated = :updated";
 				$stmt = $dbh->prepare($sql);
 				$stmt->bindValue(':id', $this->id);
 				$stmt->bindValue(':user_id', $this->user_id);
@@ -54,6 +56,7 @@
 				$stmt->bindValue(':name', $this->name);
 				$stmt->bindValue(':status', $this->status);
 				$stmt->bindValue(':type', $this->type);
+				$stmt->bindValue(':permissions', $this->permissions);
 				$stmt->bindValue(':syntax', $this->syntax);
 				$stmt->bindValue(':content', $this->content);
 				$stmt->bindValue(':created', $this->created);
@@ -61,6 +64,12 @@
 				$stmt->execute();
 				if (! $this->id && $dbh->lastInsertId() ) {
 					$this->id = $dbh->lastInsertId();
+				} else {
+					$sql = "INSERT INTO banana_bites_history (bite_id, user_id, modified) VALUES (:bite_id, :user_id, NOW())";
+					$stmt = $dbh->prepare($sql);
+					$stmt->bindValue(':bite_id', $this->id);
+					$stmt->bindValue(':user_id', $site->user->id);
+					$stmt->execute();
 				}
 				$ret = true;
 			} catch (PDOException $e) {
@@ -107,7 +116,7 @@
 			$ret = false;
 			$dbh = $site->getDatabase();
 			try {
-				$sql = "SELECT id, user_id, parent_id, name, status, type, syntax, content, created, updated FROM banana_bites_bite WHERE id = :id";
+				$sql = "SELECT id, user_id, parent_id, name, status, type, permissions, syntax, content, created, updated FROM banana_bites_bite WHERE id = :id";
 				$stmt = $dbh->prepare($sql);
 				$stmt->bindValue(':id', $id);
 				$stmt->execute();
@@ -133,9 +142,9 @@
 			$offset = is_numeric($offset) ? $offset : 0;
 			$limit = is_numeric($limit) ? $limit : 1000;
 			$sort = in_array(strtoupper($sort), array('ASC', 'DESC')) ? $sort : 'DESC';
-			$order = in_array(strtolower($order), array('id', 'user_id', 'parent_id', 'name', 'status', 'type', 'syntax', 'content', 'created', 'updated')) ? $order : 'id';
+			$order = in_array(strtolower($order), array('id', 'user_id', 'parent_id', 'name', 'status', 'type', 'permissions', 'syntax', 'content', 'created', 'updated')) ? $order : 'id';
 			try {
-				$sql = "SELECT id, user_id, parent_id, name, status, type, syntax, content, created, updated FROM banana_bites_bite ORDER BY {$order} {$sort} LIMIT {$offset},{$limit}";
+				$sql = "SELECT id, user_id, parent_id, name, status, type, permissions, syntax, content, created, updated FROM banana_bites_bite ORDER BY {$order} {$sort} LIMIT {$offset},{$limit}";
 				$stmt = $dbh->prepare($sql);
 				$stmt->execute();
 				$stmt->setFetchMode(PDO::FETCH_CLASS, 'Bite');
@@ -160,7 +169,7 @@
 		static function where($field, $value, $operator = '=', $offset = 0, $limit = 1000, $order = 'id', $sort = 'DESC') {
 			global $site;
 			$dbh = $site->getDatabase();
-			$field = in_array(strtolower($field), array('id', 'user_id', 'parent_id', 'name', 'status', 'type', 'syntax', 'content', 'created', 'updated')) ? $field : 'id';
+			$field = in_array(strtolower($field), array('id', 'user_id', 'parent_id', 'name', 'status', 'type', 'permissions', 'syntax', 'content', 'created', 'updated')) ? $field : 'id';
 			$value = is_numeric($value) ? $value : $dbh->quote($value);
 			return self::rawWhere("{$field} {$operator} {$value}", $offset, $limit, $order, $sort);
 		}
@@ -181,9 +190,9 @@
 			$offset = is_numeric($offset) ? $offset : 0;
 			$limit = is_numeric($limit) ? $limit : 1000;
 			$sort = in_array(strtoupper($sort), array('ASC', 'DESC')) ? $sort : 'DESC';
-			$order = in_array(strtolower($order), array('id', 'user_id', 'parent_id', 'name', 'status', 'type', 'syntax', 'content', 'created', 'updated')) ? $order : 'id';
+			$order = in_array(strtolower($order), array('id', 'user_id', 'parent_id', 'name', 'status', 'type', 'permissions', 'syntax', 'content', 'created', 'updated')) ? $order : 'id';
 			try {
-				$sql = "SELECT id, user_id, parent_id, name, status, type, syntax, content, created, updated FROM banana_bites_bite WHERE {$conditions} ORDER BY {$order} {$sort} LIMIT {$offset},{$limit}";
+				$sql = "SELECT id, user_id, parent_id, name, status, type, permissions, syntax, content, created, updated FROM banana_bites_bite WHERE {$conditions} ORDER BY {$order} {$sort} LIMIT {$offset},{$limit}";
 				$stmt = $dbh->prepare($sql);
 				$stmt->execute();
 				$stmt->setFetchMode(PDO::FETCH_CLASS, 'Bite');

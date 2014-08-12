@@ -41,6 +41,7 @@
 					$content = $request->post('content');
 					$status = $request->post('status');
 					$type = $request->post('type');
+					$permissions = $request->post('permissions');
 					$syntax = $request->post('syntax');
 					$description = $request->post('description');
 					# Validate anti-csrf token
@@ -62,6 +63,7 @@
 					$bite->user_id = $site->user->id;
 					$bite->status = $status;
 					$bite->type = $type;
+					$bite->permissions = $permissions;
 					$bite->syntax = $syntax;
 					$bite->name = $name;
 					$bite->content = htmlspecialchars($content);
@@ -90,6 +92,7 @@
 					$content = $request->post('content');
 					$status = $request->post('status');
 					$type = $request->post('type');
+					$permissions = $request->post('permissions');
 					$syntax = $request->post('syntax');
 					$description = $request->post('description');
 					# Validate anti-csrf token
@@ -109,6 +112,7 @@
 					# Update bite
 					$bite->status = $status;
 					$bite->type = $type;
+					$bite->permissions = $permissions;
 					$bite->syntax = $syntax;
 					$bite->name = $name;
 					$bite->content = htmlspecialchars($content);

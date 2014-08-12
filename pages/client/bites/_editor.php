@@ -23,6 +23,13 @@
 							</select>
 						</div>
 						<div class="form-group">
+							<label for="permissions" class="control-label">Permissions</label>
+							<select type="text" name="permissions" id="permissions" class="form-control">
+								<option <?php option_selected($bite ? $bite->permissions : '', 'Read-only'); ?> value="Read-only">Read-only</option>
+								<option <?php option_selected($bite ? $bite->permissions : '', 'Editable'); ?> value="Editable">Editable</option>
+							</select>
+						</div>
+						<div class="form-group">
 							<label for="syntax" class="control-label">Syntax</label>
 							<select type="text" name="syntax" id="syntax" class="form-control">
 								<option <?php option_selected($bite ? $bite->syntax : '', 'clike'); ?> value="clike">C/C++</option>
