@@ -86,7 +86,6 @@
 
 		function showAction($id) {
 			global $site;
-			$this->checkUser();
 			$page = $id;
 			$request = $site->mvc->getRequest();
 			$response = $site->mvc->getResponse();
@@ -97,6 +96,11 @@
 			$controllerClass = "Client{$controller}Controller";
 			$controllerClass = str_replace(' ', '', ucwords(str_replace('-', ' ', $controllerClass)));
 			$site->addBodyClass('client');
+			if ( strtolower($controller) == 'bites' && strtolower($action) == 'embed' ) {
+				# Do nothing, embedded bites are public
+			} else {
+				$this->checkUser();
+			}
 			if ( class_exists($controllerClass) ) {
 				$instance = new $controllerClass;
 				$instance->view = $this->view;
