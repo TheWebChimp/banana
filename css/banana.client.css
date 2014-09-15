@@ -474,6 +474,12 @@ textarea {
 	border-bottom: none;
 }
 
+.tickets.tickets-edit .form-ticket .attachments .attachment {
+
+	padding-bottom: 0;
+	border-bottom: none;
+}
+
 .tickets .pagination {
 
 	margin-top: 0;

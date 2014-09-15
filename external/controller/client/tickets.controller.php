@@ -100,6 +100,49 @@
 			}
 		}
 
+		function editAction($id) {
+			global $site;
+			$request = $site->mvc->getRequest();
+			$ticket = Tickets::get($id);
+			switch ($request->type) {
+				case 'get':
+					$this->view->render('tickets/edit-page', array('ticket' => $ticket));
+					break;
+				case 'post':
+					# Get parameters
+					$token = $request->post('token');
+					$subject = $request->post('subject');
+					$details = $request->post('details');
+					$project_id = $request->post('project_id');
+					$attachments = $request->post('attachments', array());
+					# Validate anti-csrf token
+					if (! $site->csrf->checkToken($token) ) {
+						$site->errorMessage('Invalid request data');
+						exit;
+					}
+					# Validate fields
+					$validator = Validator::newInstance()
+						->addRule('subject', $subject)
+						->addRule('details', $details)
+						->validate();
+					if (! $validator->isValid() ) {
+						$site->errorMessage( 'The following fields are required: ' . implode( ',', $validator->getErrors() ) );
+						exit;
+					}
+					# Update ticket
+					$ticket->project_id = $project_id;
+					$ticket->client_id = 0;
+					$ticket->subject = $subject;
+					$ticket->details = $details;
+					$ticket->attachments = serialize($attachments);
+					$ticket->save();
+					# And redirect
+					$site->redirectTo( $site->urlTo("/tickets/{$ticket->id}") );
+					exit;
+					break;
+			}
+		}
+
 		function replyAction() {
 			global $site;
 			$request = $site->mvc->getRequest();

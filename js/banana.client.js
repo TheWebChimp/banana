@@ -42,8 +42,8 @@ ClientModuleBites = Class.extend({
 				$.alert('The bite contents have been copied to the clipboard');
 			}
 		});
-			
-		
+
+
 	}
 });
 

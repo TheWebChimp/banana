@@ -35,16 +35,20 @@
 									<form action="<?php $site->urlTo("/tickets/close/{$ticket->id}", true); ?>" method="post">
 										<input type="hidden" name="token" value="<?php $site->csrf->getToken(true); ?>">
 										<button type="submit" class="btn btn-success btn-sm">Close Ticket</button>
+										<a href="<?php $site->urlTo("/tickets/edit/{$ticket->id}", true); ?>" class="btn btn-primary btn-sm"><i class="fa fa-pencil"></i> Edit Ticket</a>
 										<a href="<?php $site->urlTo("/tickets/delete/{$ticket->id}", true); ?>" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> Delete Ticket</a>
 									</form>
 								<?php else: ?>
 									<form action="<?php $site->urlTo("/tickets/open/{$ticket->id}", true); ?>" method="post">
 										<input type="hidden" name="token" value="<?php $site->csrf->getToken(true); ?>">
 										<button type="submit" class="btn btn-success btn-sm">Reopen Ticket</button>
+										<a href="<?php $site->urlTo("/tickets/edit/{$ticket->id}", true); ?>" class="btn btn-primary btn-sm"><i class="fa fa-pencil"></i> Edit Ticket</a>
 										<a href="<?php $site->urlTo("/tickets/delete/{$ticket->id}", true); ?>" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> Delete Ticket</a>
 									</form>
 								<?php endif; ?>
 							</p>
+						<?php elseif ( Users::getCurrentUserId() == $ticket->user_id ): ?>
+							<a href="<?php $site->urlTo("/tickets/edit/{$ticket->id}", true); ?>" class="btn btn-primary btn-sm"><i class="fa fa-pencil"></i> Edit Ticket</a>
 						<?php endif; ?>
 						<hr>
 						<div class="ticket-body">
