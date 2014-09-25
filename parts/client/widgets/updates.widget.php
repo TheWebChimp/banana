@@ -35,7 +35,7 @@
 					foreach ($todos as $todo):
 						$creator = Users::get($todo->user_id);
 				?>
-					<li><a href="<?php $site->urlTo("/todos/{$todo->id}", true) ?>"><?php echo $todo->name; ?></a><span class="text-muted"> &mdash; <?php echo relative_time( $todo->created );  ?> by <?php echo $creator->nickname ?></span></li>
+					<li><a href="<?php $site->urlTo("/todo/{$todo->id}", true) ?>"><?php echo $todo->name; ?></a><span class="text-muted"> &mdash; <?php echo relative_time( $todo->created );  ?> by <?php echo $creator->nickname ?></span></li>
 				<?php endforeach; ?>
 			</ul>
 			<?php endif; ?>
