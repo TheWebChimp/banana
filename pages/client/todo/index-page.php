@@ -73,8 +73,8 @@
 						<?php endif; ?>
 						<div class="form-group">
 							<div class="btn-group">
-								<button class="btn btn-default btn-toggle active" data-show="All"></strong> Show all tasks</button>
-								<button class="btn btn-default btn-toggle" data-show="Pending"><strong><?php echo $pending; ?></strong> Pending</button>
+								<button class="btn btn-default btn-toggle" data-show="All"></strong> Show all tasks</button>
+								<button class="btn btn-default btn-toggle active" data-show="Pending"><strong><?php echo $pending; ?></strong> Pending</button>
 								<button class="btn btn-default btn-toggle" data-show="Done"><strong><?php echo $done; ?></strong> Done</button>
 							</div>
 						</div>
@@ -87,7 +87,7 @@
 									foreach ($todos as $todo):
 										$creator = Users::get($todo->user_id);
 							?>
-							<div class="list-group-item todo" data-status="<?php echo $todo->status; ?>">
+							<div class="list-group-item todo" <?php echo ($todo->status == 'Done' ? 'style="display: none;"' : '') ?> data-status="<?php echo $todo->status; ?>">
 								<span class="fa fa-<?php echo ($todo->status == 'Done' ? 'check' : 'exclamation'); ?>-circle text-<?php echo ($todo->status == 'Done' ? 'success' : 'info'); ?>" title="<?php echo $todo->status; ?> Ticket"></span>
 								<p class="list-group-item-text title clearfix">
 									<?php if ( Users::currentUserCan('manage_options') ): ?>
