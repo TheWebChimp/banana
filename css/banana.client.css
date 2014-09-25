@@ -358,9 +358,10 @@ textarea {
 	margin-right: 5px;
 }
 
-.tickets .ticket-wrap .ticket-body {
+.tickets .ticket-wrap .ticket-body img {
 
-	/**/
+	max-width: 100%;
+	height: auto;
 }
 
 .tickets .ticket-wrap .ticket-body .avatar {
@@ -532,6 +533,12 @@ textarea {
 .todo .list-group .todo .details *:last-child {
 
 	margin-bottom: 0;
+}
+
+.todo .list-group .todo .details img {
+
+	max-width: 100%;
+	height: auto;
 }
 
 /*.todo .list-group .todo .actions {
