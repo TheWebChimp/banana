@@ -1,7 +1,7 @@
 <?php
-	$tickets = Tickets::all(1, 5);
-	$bites = Bites::all(0, 5);
-	$todos = ToDos::all(0, 5);
+	$tickets = Tickets::all(1, 5, 'desc', 'created');
+	$bites = Bites::all(0, 5, 'created', 'desc');
+	$todos = ToDos::all(0, 5, 'created', 'desc');
 ?>
 	<div class="panel panel-default">
 		<div class="panel-heading">Recent Activity</div>
