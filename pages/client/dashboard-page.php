@@ -24,8 +24,11 @@
 
 					<div class="widgets">
 						<div class="row">
-							<div class="widget col-md-6"><?php $site->getParts('client/widgets/tickets.widget'); ?></div>
-							<div class="widget col-md-6"><?php $site->getParts('client/widgets/todo.widget'); ?></div>
+							<div class="widget col-md-7"><?php $site->getParts('client/widgets/updates.widget'); ?></div>
+							<div class="widget col-md-5">
+								<?php $site->getParts('client/widgets/tickets.widget'); ?>
+								<?php $site->getParts('client/widgets/todo.widget'); ?>
+							</div>
 						</div>
 					</div>
 
