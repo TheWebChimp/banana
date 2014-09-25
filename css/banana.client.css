@@ -534,10 +534,10 @@ textarea {
 	margin-bottom: 0;
 }
 
-.todo .list-group .todo .actions {
+/*.todo .list-group .todo .actions {
 
 	display: none;
-}
+}*/
 
 .todo .list-group .todo.in .title {
 
@@ -549,10 +549,10 @@ textarea {
 	display: block;
 }
 
-.todo .list-group .todo.in .actions {
+/*.todo .list-group .todo.in .actions {
 
 	display: block;
-}
+}*/
 
 .todo .form-todo textarea,
 .todo .form-todo .preview-area {

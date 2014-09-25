@@ -142,6 +142,43 @@
 			}
 		}
 
+		function markAction($id) {
+			global $site;
+			$response = $site->mvc->getResponse();
+			$request = $site->mvc->getRequest();
+			# Check user permissions
+			if (! Users::currentUserCan('manage_options') ) {
+				$site->redirectTo( $site->urlTo('/todo') );
+			}
+			$todo = ToDos::get($id);
+			switch ($request->type) {
+				case 'get':
+					# Get parameters
+					$status = $request->param('status');
+					# Validate fields
+					$validator = Validator::newInstance()
+						->addRule('status', $status)
+						->validate();
+					if (! $validator->isValid() ) {
+						$site->errorMessage( 'The following fields are required: ' . implode( ',', $validator->getErrors() ) );
+						exit;
+					}
+					$todo->status = ucfirst($status);
+					$todo->save();
+					if ( $site->isAjaxRequest() ) {
+						$response->setHeader('Content-Type', 'application/json');
+						$response->setBody( json_encode($todo) );
+						$response->respond();
+					} else {
+						# And redirect
+						$category = $todo->getCategory();
+						$site->redirectTo( $site->urlTo("/todo/{$category->slug}") );
+					}
+					exit;
+					break;
+			}
+		}
+
 		function deleteAction($id) {
 			global $site;
 			$request = $site->mvc->getRequest();

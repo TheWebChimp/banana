@@ -85,17 +85,24 @@
 							<?php
 								if ($todos):
 									foreach ($todos as $todo):
+										$creator = Users::get($todo->user_id);
 							?>
 							<div class="list-group-item todo" data-status="<?php echo $todo->status; ?>">
 								<span class="fa fa-<?php echo ($todo->status == 'Done' ? 'check' : 'exclamation'); ?>-circle text-<?php echo ($todo->status == 'Done' ? 'success' : 'info'); ?>" title="<?php echo $todo->status; ?> Ticket"></span>
 								<p class="list-group-item-text title clearfix">
 									<?php if ( Users::currentUserCan('manage_options') ): ?>
 									<span class="pull-right actions">
+										<?php if ($todo->status == 'Done'): ?>
+										<a href="<?php $site->urlTo("/todo/mark/{$todo->id}?status=pending", true) ?>" class="btn btn-xs btn-primary btn-mark" title="Mark as pending"><i class="fa fa-square-o"></i></a>
+										<?php else: ?>
+										<a href="<?php $site->urlTo("/todo/mark/{$todo->id}?status=done", true) ?>" class="btn btn-xs btn-primary btn-mark" title="Mark as done"><i class="fa fa-check-square-o"></i></a>
+										<?php endif; ?>
 										<a href="<?php $site->urlTo("/todo/edit/{$todo->id}", true) ?>" class="btn btn-xs btn-primary" title="Edit"><i class="fa fa-pencil"></i></a>
 										<a href="<?php $site->urlTo("/todo/delete/{$todo->id}", true) ?>" class="btn btn-xs btn-danger" title="Delete"><i class="fa fa-trash-o"></i></a>
 									</span>
 									<?php endif; ?>
-									<strong><?php echo $todo->name; ?></strong>
+									<strong><?php echo $todo->name; ?></strong><br>
+									<small class="text-muted"><?php echo relative_time( $todo->created );  ?> by <?php echo $creator->nickname ?></small>
 								</p>
 								<div class="list-group-item-text details">
 									<?php
@@ -116,7 +123,6 @@
 										endif;
 									?>
 								</div>
-								<div class="text-right text-muted"><small><?php echo relative_time( $todo->created );  ?></small></div>
 							</div>
 							<?php
 									endforeach;
