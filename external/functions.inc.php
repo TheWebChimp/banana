@@ -8,14 +8,18 @@
 
 	# Include styles
 	$site->registerStyle('reset', $site->baseUrl('/css/reset.css') );
-	$site->registerStyle('structure', $site->baseUrl('/css/structure.css') );
+	$site->registerStyle('plugins', $site->baseUrl('/css/plugins.css') );
+	$site->registerStyle('chimplate', $site->baseUrl('/css/chimplate.css') );
 	$site->registerStyle('sticky-footer', $site->baseUrl('/css/sticky-footer.css') );
-	$site->registerStyle('style', $site->baseUrl('/css/style.css'), array('reset', 'structure', 'sticky-footer') );
-	$site->enqueueStyle('style');
+	$site->registerStyle('mobile', $site->baseUrl('/css/mobile.css'), array('reset', 'plugins', 'chimplate', 'sticky-footer') );
+	$site->registerStyle('desktop', $site->baseUrl('/css/desktop.css'), array('mobile') );
+	$site->enqueueStyle('desktop');
 
 	# Include scripts
-	$site->registerScript('script', $site->baseUrl('/js/script.js'), array('jquery') );
-	$site->enqueueScript('script');
+	$site->registerScript('plugins', $site->baseUrl('/js/plugins.js'), array('jquery') );
+	$site->registerScript('ladybug', $site->baseUrl('/js/ladybug.min.js'), array('jquery', 'underscore') );
+	$site->registerScript('banana', $site->baseUrl('/js/banana.js'), array('plugins', 'ladybug') );
+	$site->enqueueScript('banana');
 
 	# Include extra files
 	include $site->baseDir('/external/utilities.inc.php');
@@ -34,17 +38,5 @@
 
 	# Pages
 	// $site->addPage('sample', 'sample-page');
-
-	# Localization
-	if ( isset($i18n) ) {
-		$i18n->addLocale('en', $site->baseDir('/plugins/i18n/lang/enUS.php'));
-		$i18n->addLocale('es', $site->baseDir('/plugins/i18n/lang/esMX.php'));
-		$i18n->setLocale('en');
-	}
-
-	# Access control
-	if ( isset($gatekeeper) ) {
-		$gatekeeper->checkLogin();
-	}
 
 ?>
