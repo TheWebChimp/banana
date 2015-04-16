@@ -25,7 +25,7 @@
 										if ($clients):
 											foreach ($clients as $client):
 									?>
-									<option <?php option_selected($ticket ? $ticket->client_id : '', $client->id); ?> value="<?php echo $client->id; ?>"><?php echo $project->name; ?></option>
+									<option <?php option_selected($ticket ? $ticket->client_id : '', $client->id); ?> value="<?php echo $client->id; ?>"><?php echo $client->name; ?></option>
 									<?php
 											endforeach;
 										endif;
