@@ -5,6 +5,8 @@
 	include $site->baseDir('/lib/Parsedown.php');
 	$parsedown = new Parsedown();
 
+	$ticket_project = Projects::get($ticket->project_id);
+	$ticket_client = $ticket_project? $ticket_project->clients[0] : '';
 ?>
 <?php $site->getParts(array('client/header_html', 'client/header')) ?>
 
@@ -20,6 +22,9 @@
 					<a href="<?php $site->urlTo('/tickets', true); ?>" class="btn btn-link btn-back"><i class="fa fa-arrow-left"></i></a>
 					<div class="ticket-thread">
 						<h2><?php echo $ticket->subject; ?> <span class="text-muted">#<?php echo $ticket->id; ?></span></h2>
+						<?php if($ticket_project): ?>
+							<h5><?php echo $ticket_client->name; ?> &mdash; <?php echo $ticket_project->name; ?></h5>
+						<?php endif; ?>
 						<p>
 							<?php if ($ticket->status == 'Open'): ?>
 								<span class="label label-success"><i class="fa fa-check-circle"></i> Open</span>
@@ -84,7 +89,10 @@
 									$replier = Users::get($reply->user_id);
 									$unreply = '';
 									if ( $reply->user_id == Users::getCurrentUserId() || Users::currentUserCan('manage_options') ) {
-										$unreply = '<a href="'.$site->urlTo("/tickets/unreply/{$reply->id}").'" class="btn btn-danger btn-xs pull-right"><i class="fa fa-trash-o"></i></a>';
+										$unreply = '<div class="pull-right">
+											<a href="'.$site->urlTo("/tickets/unreply/{$reply->id}").'" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i></a>&nbsp;
+											<a href="'.$site->urlTo("/tickets/unreply/{$reply->id}").'" class="btn btn-success btn-xs pull-right"><i class="fa fa-pencil"></i></a>
+											</div>';
 									}
 						?>
 							<div class="ticket-body">
