@@ -81,6 +81,7 @@
 					$subject = $request->post('subject');
 					$details = $request->post('details');
 					$project_id = $request->post('project_id');
+					$client_id = $request->post('client_id');
 					$attachments = $request->post('attachments', array());
 					# Validate anti-csrf token
 					if (! $site->csrf->checkToken($token) ) {
@@ -101,7 +102,7 @@
 					$ticket = new Ticket();
 					$ticket->user_id = $user->id;
 					$ticket->project_id = $project_id;
-					$ticket->client_id = 0;
+					$ticket->client_id = $client_id;
 					$ticket->subject = $subject;
 					$ticket->details = $details;
 					$ticket->attachments = serialize($attachments);
@@ -127,6 +128,7 @@
 					$token = $request->post('token');
 					$subject = $request->post('subject');
 					$details = $request->post('details');
+					$client_id = $request->post('client_id');
 					$project_id = $request->post('project_id');
 					$attachments = $request->post('attachments', array());
 					# Validate anti-csrf token
@@ -145,7 +147,7 @@
 					}
 					# Update ticket
 					$ticket->project_id = $project_id;
-					$ticket->client_id = 0;
+					$ticket->client_id = $client_id;
 					$ticket->subject = $subject;
 					$ticket->details = $details;
 					$ticket->attachments = serialize($attachments);

@@ -15,6 +15,22 @@
 
 					<div class="cols right-fixed">
 						<div class="col-right">
+							<div class="form-group">
+								<label for="client_id" class="control-label">Client</label>
+								<select name="client_id" id="client_id" class="form-control">
+									<option value="">None</option>
+									<?php
+										$clients = Users::currentUserCan('manage_options') ? Clients::all() : $site->user->clients;
+										if ($clients):
+											foreach ($clients as $client):
+									?>
+									<option <?php option_selected($ticket ? $ticket->client_id : '', $client->id); ?> value="<?php echo $client->id; ?>"><?php echo $client->name; ?></option>
+									<?php
+											endforeach;
+										endif;
+									?>
+								</select>
+							</div>
 							<!--  -->
 							<div class="form-group">
 								<label for="project_id" class="control-label">Project</label>
