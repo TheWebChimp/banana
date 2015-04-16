@@ -68,10 +68,15 @@
 											foreach ($attachments as $attachment_id):
 												$attachment = Attachments::get($attachment_id);
 												if (! $attachment ) continue;
+												$is_image = preg_match('/image\/(jpeg|gif|png)/', $attachment->mime) === 1;
 									?>
-									<div class="attachment">
-										<i class="fa fa-file"></i>
-										<a href="<?php $attachment->getUrl(true); ?>" target="_blank"><?php echo $attachment->name; ?></a>
+									<div class="attachment <?php echo ($is_image ? 'attachment-image' : 'attachment-binary') ?>">
+										<?php if ($is_image): ?>
+												<a href="<?php $attachment->getUrl(true); ?>" class="image-thumbnail type-image"><img src="<?php echo $attachment->getImage('url', 'thumbnail') ?>" alt=""></a>
+											<?php else: ?>
+												<i class="fa fa-file"></i>
+											<?php endif; ?>
+										<a class="<?php echo ($is_image ? 'type-image' : 'type-binary') ?>" href="<?php $attachment->getUrl(true); ?>" target="_blank"><?php echo $attachment->name; ?></a>
 										<span class="text-muted"> (<?php echo $attachment->mime; ?>)</span>
 									</div>
 									<?php
@@ -107,10 +112,15 @@
 												foreach ($attachments as $attachment_id):
 													$attachment = Attachments::get($attachment_id);
 													if (! $attachment ) continue;
+													$is_image = preg_match('/image\/(jpeg|gif|png)/', $attachment->mime) === 1;
 										?>
-										<div class="attachment">
-											<i class="fa fa-file"></i>
-											<a href="<?php $attachment->getUrl(true); ?>" target="_blank"><?php echo $attachment->name; ?></a>
+										<div class="attachment <?php echo ($is_image ? 'attachment-image' : 'attachment-binary') ?>">
+											<?php if ($is_image): ?>
+												<a href="<?php $attachment->getUrl(true); ?>" class="image-thumbnail type-image"><img src="<?php echo $attachment->getImage('url', 'thumbnail') ?>" alt=""></a>
+											<?php else: ?>
+												<i class="fa fa-file"></i>
+											<?php endif; ?>
+											<a class="<?php echo ($is_image ? 'type-image' : 'type-binary') ?>" href="<?php $attachment->getUrl(true); ?>" target="_blank"><?php echo $attachment->name; ?></a>
 											<span class="text-muted"> (<?php echo $attachment->mime; ?>)</span>
 										</div>
 										<?php

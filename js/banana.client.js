@@ -224,6 +224,7 @@ ClientModuleTickets = ClientModule.extend({
 				form = el.closest('form');
 			form.submit();
 		});
+		$('.attachment .type-image').magnificPopup({ type: 'image' });
 		//
 		$('.btn-preview').on('click', function() {
 			var preview = $('.preview-area'),

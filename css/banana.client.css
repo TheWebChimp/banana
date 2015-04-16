@@ -364,6 +364,24 @@ textarea {
 	height: auto;
 }
 
+.tickets .ticket-wrap .attachment.attachment-image {
+
+	margin-bottom: 5px;
+}
+
+.tickets .ticket-wrap .attachment.attachment-image .image-thumbnail {
+
+	outline: none;
+}
+
+.tickets .ticket-wrap .attachment.attachment-image .image-thumbnail img {
+
+	max-width: 48px;
+	height: auto;
+	border-radius: 100px;
+	margin-right: 5px;
+}
+
 .tickets .ticket-wrap .ticket-body .avatar {
 
 	float: left;
