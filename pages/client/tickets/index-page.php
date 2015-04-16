@@ -14,13 +14,29 @@
 				</ol>
 				<div class="row">
 					<div class="col-md-4">
-						<h3>Submit a new ticket</h3>
+						<h3>Search tickets</h3>
 
-						<form class="form-ticket well" action="<?php $site->urlTo('/tickets/submit', true); ?>" method="post" data-submit="validate">
+						<form class="form-ticket well" action="<?php $site->urlTo('/tickets', true); ?>" method="post" data-submit="validate">
 							<input type="hidden" name="token" value="<?php $site->csrf->getToken(true); ?>">
 							<div class="form-group">
-								<label for="subject" class="control-label">Subject</label>
-								<input type="text" name="subject" id="subject" class="form-control" data-validate="required">
+								<label for="search" class="control-label">Search</label>
+								<input type="text" name="search" id="search" class="form-control" value="<?php echo htmlspecialchars($search) ?>">
+							</div>
+							<div class="form-group">
+								<label for="client_id" class="control-label">Client</label>
+								<select name="client_id" id="client_id" class="form-control">
+									<option value="">None</option>
+									<?php
+										$clients = Users::currentUserCan('manage_options') ? Clients::all() : $site->user->clients;
+										if ($clients):
+											foreach ($clients as $client):
+									?>
+									<option <?php option_selected($client_id ? $client_id : 0, $client->id) ?> value="<?php echo $client->id; ?>"><?php echo $client->name; ?></option>
+									<?php
+											endforeach;
+										endif;
+									?>
+								</select>
 							</div>
 							<div class="form-group">
 								<label for="project_id" class="control-label">Project</label>
@@ -31,41 +47,15 @@
 										if ($projects):
 											foreach ($projects as $project):
 									?>
-									<option value="<?php echo $project->id; ?>"><?php echo $project->name; ?></option>
+									<option <?php option_selected($project_id ? $project_id : 0, $project->id) ?> value="<?php echo $project->id; ?>"><?php echo $project->name; ?></option>
 									<?php
 											endforeach;
 										endif;
 									?>
 								</select>
 							</div>
-							<ul class="nav nav-pills">
-								<li class="active"><a href="#write" data-toggle="tab">Write</a></li>
-								<li><a href="#preview" data-toggle="tab" class="btn-preview">Preview</a></li>
-							</ul>
-							<div class="tab-content reply">
-								<div class="tab-pane active" id="write">
-									<div class="form-group">
-										<textarea name="details" id="details" class="code-area form-control" data-validate="required"></textarea>
-									</div>
-								</div>
-								<div class="tab-pane" id="preview">
-									<div class="form-group">
-										<div class="preview-area form-control"></div>
-									</div>
-								</div>
-							</div>
-							<div class="well well-sm text-center text-muted dropfiles">
-								Drag files or click here to add an attachment
-								<div class="fallback">
-									<input type="file" name="file" id="">
-								</div>
-							</div>
-							<div class="attachments">
-								<!--  -->
-							</div>
 							<div class="text-right">
-								<span class="text-muted pull-left"><small><i class="fa fa-code"></i> Parsed as Markdown</small></span>
-								<button type="submit" class="btn btn-success">Submit ticket</button>
+								<button type="submit" class="btn btn-primary">Search tickets</button>
 							</div>
 						</form>
 						<?php
@@ -123,6 +113,7 @@
 							<input type="hidden" name="show" value="<?php echo $show; ?>">
 							<input type="hidden" name="sort" value="<?php echo $sort; ?>">
 							<div class="form-group">
+								<a href="<?php $site->urlTo('/tickets/new', true); ?>" class="btn btn-success pull-right">Create new ticket</a>
 								<div class="btn-group" data-toggle="buttons">
 									<label for="filter-opened" class="btn btn-default <?php echo ($filter == 'open' ? 'active' : ''); ?>"><input <?php option_selected($filter, 'open', 'checked'); ?> type="radio" name="filter" value="open" id="filter-open"> <strong><?php echo $open; ?></strong> Open</label>
 									<label for="filter-closed" class="btn btn-default <?php echo ($filter == 'closed' ? 'active' : ''); ?>"><input <?php option_selected($filter, 'closed', 'checked'); ?> type="radio" name="filter" value="closed" id="filter-closed"> <strong><?php echo $closed; ?></strong> Closed</label>
@@ -153,6 +144,10 @@
 								</div>
 							</div>
 						</form>
+						<!--  -->
+						<?php if ($search): ?>
+							<div class="alert alert-info">Showing tickets for <strong>&quot;<?php echo htmlspecialchars($search) ?>&quot;</strong> &mdash; <a href="<?php $site->urlTo('/tickets', true) ?>">Click here to reset filters</a></div>
+						<?php endif ?>
 						<!--  -->
 						<div class="list-group">
 							<?php

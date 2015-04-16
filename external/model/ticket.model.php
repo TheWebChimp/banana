@@ -44,7 +44,7 @@
 			try {
 				$sql = "INSERT INTO banana_ticket (id, user_id, project_id, client_id, subject, details, attachments, status, replies, created, modified)
 						VALUES (:id, :user_id, :project_id, :client_id, :subject, :details, :attachments, :status, :replies, :created, :modified)
-						ON DUPLICATE KEY UPDATE subject = :subject, details = :details, attachments = :attachments, status = :status, modified = :modified";
+						ON DUPLICATE KEY UPDATE project_id = :project_id, client_id = :client_id, subject = :subject, details = :details, attachments = :attachments, status = :status, modified = :modified";
 				$stmt = $dbh->prepare($sql);
 				$stmt->bindValue(':id', $this->id);
 				$stmt->bindValue(':user_id', $this->user_id);

@@ -11,11 +11,17 @@
 		function indexAction() {
 			global $site;
 			$request = $site->mvc->getRequest();
+			$dbh = $site->getDatabase();
 			//
-			$filter = $request->get('filter', 'open');
-			$sort = $request->get('sort', 'newest');
-			$page = $request->get('page', '1');
-			$show = $request->get('show', '15');
+			$filter = $request->param('filter', 'open');
+			$sort = $request->param('sort', 'newest');
+			$page = $request->param('page', '1');
+			$show = $request->param('show', '15');
+			$search = $request->param('search');
+			$client_id = $request->param('client_id');
+			$project_id = $request->param('project_id');
+			//
+			$search_str = $search ? $dbh->quote("%{$search}%") : '';
 			//
 			$page = is_numeric($page) ? $page : 1;
 			$show = is_numeric($show) ? $show : 15;
@@ -35,15 +41,23 @@
 			//
 			if ( Users::currentUserCan('manage_options') ) {
 				$conditions = "status = '{$filter}'";
+				$conditions .= $search_str ? " AND subject LIKE {$search_str}" : '';
+				$conditions .= is_numeric($client_id) ? " AND client_id = {$client_id}" : '';
+				$conditions .= is_numeric($project_id) ? " AND project_id = {$project_id}" : '';
+				//
 				$tickets = Tickets::rawWhere($conditions, $page, $show, $params[1], $params[0]);
 				$total = Tickets::count($conditions);
 			} else {
 				$uid = Users::getCurrentUserId();
 				$conditions = "status = '{$filter}' AND user_id = {$uid}";
+				$conditions .= $search_str ? " AND subject LIKE {$search_str}" : '';
+				$conditions .= is_numeric($client_id) ? " AND client_id = {$client_id}" : '';
+				$conditions .= is_numeric($project_id) ? " AND project_id = {$project_id}" : '';
+				//
 				$tickets = Tickets::rawWhere($conditions, $page, $show, $params[1], $params[0]);
 				$total = Tickets::count($conditions);
 			}
-			$this->view->render('tickets/index-page', array('tickets' => $tickets, 'page' => $page, 'show' => $show, 'filter' => $filter, 'sort' => $sort, 'total' => $total));
+			$this->view->render('tickets/index-page', array('tickets' => $tickets, 'client_id' => $client_id, 'project_id' => $project_id, 'search' => $search, 'page' => $page, 'show' => $show, 'filter' => $filter, 'sort' => $sort, 'total' => $total));
 		}
 
 		function showAction($id) {
@@ -130,6 +144,49 @@
 						exit;
 					}
 					# Update ticket
+					$ticket->project_id = $project_id;
+					$ticket->client_id = 0;
+					$ticket->subject = $subject;
+					$ticket->details = $details;
+					$ticket->attachments = serialize($attachments);
+					$ticket->save();
+					# And redirect
+					$site->redirectTo( $site->urlTo("/tickets/{$ticket->id}") );
+					exit;
+					break;
+			}
+		}
+
+		function newAction($id) {
+			global $site;
+			$request = $site->mvc->getRequest();
+			switch ($request->type) {
+				case 'get':
+					$this->view->render('tickets/new-page', array('ticket' => null));
+					break;
+				case 'post':
+					# Get parameters
+					$token = $request->post('token');
+					$subject = $request->post('subject');
+					$details = $request->post('details');
+					$project_id = $request->post('project_id');
+					$attachments = $request->post('attachments', array());
+					# Validate anti-csrf token
+					if (! $site->csrf->checkToken($token) ) {
+						$site->errorMessage('Invalid request data');
+						exit;
+					}
+					# Validate fields
+					$validator = Validator::newInstance()
+						->addRule('subject', $subject)
+						->addRule('details', $details)
+						->validate();
+					if (! $validator->isValid() ) {
+						$site->errorMessage( 'The following fields are required: ' . implode( ',', $validator->getErrors() ) );
+						exit;
+					}
+					# Update ticket
+					$ticket = new Ticket();
 					$ticket->project_id = $project_id;
 					$ticket->client_id = 0;
 					$ticket->subject = $subject;
