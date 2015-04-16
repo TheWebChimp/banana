@@ -56,8 +56,9 @@
 										$projects = Users::currentUserCan('manage_options') ? Projects::all() : $site->user->projects;
 										if ($projects):
 											foreach ($projects as $project):
+												$client = $project->clients ? $project->clients[0] : null;
 									?>
-									<option <?php option_selected($project_id ? $project_id : 0, $project->id) ?> value="<?php echo $project->id; ?>"><?php echo $project->name; ?></option>
+									<option <?php option_selected($project_id ? $project_id : 0, $project->id) ?> value="<?php echo $project->id; ?>"><?php echo "{$client->name} &mdash; {$project->name}"; ?></option>
 									<?php
 											endforeach;
 										endif;
