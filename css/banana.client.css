@@ -417,8 +417,8 @@ textarea {
 	position: relative;
 	resize: vertical;
 	border-bottom-style: dashed;
-	min-height: 120px;
-	max-height: 320px;
+	min-height: 320px;
+	max-height: 480px;
 	z-index: 5;
 	/*  */
 	-webkit-border-radius: 5px 5px 0 0;

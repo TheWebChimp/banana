@@ -415,6 +415,50 @@
 			$ret->respond();
 		}
 
+		function projectsAction() {
+			global $site;
+			$request = $site->mvc->getRequest();
+			$dbh = $site->getDatabase();
+			$client = $request->get('client');
+			$client = is_numeric($client) ? $client : 0;
+			$conditions = $client ? "client_id = {$client}" : 1;
+			$ret = new AjaxResponse();
+			//
+			try {
+				$sql = "SELECT id, slug, name FROM banana_project WHERE {$conditions}";
+				$stmt = $dbh->prepare($sql);
+				$stmt->execute();
+				$rows = $stmt->fetchAll();
+				$ret->result = 'success';
+				$ret->data = $rows;
+			} catch (PDOException $e) {
+				error_log( $e->getMessage() );
+			}
+			//
+			$ret->respond();
+		}
+
+		function clientsAction() {
+			global $site;
+			$request = $site->mvc->getRequest();
+			$dbh = $site->getDatabase();
+			$conditions = 1;
+			$ret = new AjaxResponse();
+			//
+			try {
+				$sql = "SELECT id, slug, name FROM banana_client WHERE {$conditions}";
+				$stmt = $dbh->prepare($sql);
+				$stmt->execute();
+				$rows = $stmt->fetchAll();
+				$ret->result = 'success';
+				$ret->data = $rows;
+			} catch (PDOException $e) {
+				error_log( $e->getMessage() );
+			}
+			//
+			$ret->respond();
+		}
+
 	}
 
 ?>

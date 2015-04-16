@@ -1,6 +1,12 @@
 <?php
-	$open = Tickets::count("status = 'Open'");
-	$closed = Tickets::count("status = 'Closed'");
+	$dbh = $site->getDatabase();
+	$conditions = '1';
+	$search_str = $search ? $dbh->quote("%{$search}%") : '';
+	$conditions .= $search_str ? " AND subject LIKE {$search_str}" : '';
+	$conditions .= is_numeric($client_id) ? " AND client_id = {$client_id}" : '';
+	$conditions .= is_numeric($project_id) ? " AND project_id = {$project_id}" : '';
+	$open = Tickets::count("{$conditions} AND status = 'Open'");
+	$closed = Tickets::count("{$conditions} AND status = 'Closed'");
 	$labels = TicketTags::where('type', '=', 'Label');
 ?>
 <?php $site->getParts(array('client/header_html', 'client/header')) ?>
@@ -18,6 +24,10 @@
 
 						<form class="form-ticket well" action="<?php $site->urlTo('/tickets', true); ?>" method="post" data-submit="validate">
 							<input type="hidden" name="token" value="<?php $site->csrf->getToken(true); ?>">
+							<input type="hidden" name="page" value="<?php echo $page; ?>">
+							<input type="hidden" name="show" value="<?php echo $show; ?>">
+							<input type="hidden" name="sort" value="<?php echo $sort; ?>">
+							<input type="hidden" name="filter" value="<?php echo $filter; ?>">
 							<div class="form-group">
 								<label for="search" class="control-label">Search</label>
 								<input type="text" name="search" id="search" class="form-control" value="<?php echo htmlspecialchars($search) ?>">
@@ -112,6 +122,9 @@
 							<input type="hidden" name="page" value="<?php echo $page; ?>">
 							<input type="hidden" name="show" value="<?php echo $show; ?>">
 							<input type="hidden" name="sort" value="<?php echo $sort; ?>">
+							<input type="hidden" name="search" value="<?php echo $search ?>">
+							<input type="hidden" name="client_id" value="<?php echo $client_id ?>">
+							<input type="hidden" name="project_id" value="<?php echo $project_id ?>">
 							<div class="form-group">
 								<a href="<?php $site->urlTo('/tickets/new', true); ?>" class="btn btn-success pull-right">Create new ticket</a>
 								<div class="btn-group" data-toggle="buttons">
@@ -147,7 +160,9 @@
 						<!--  -->
 						<?php if ($search): ?>
 							<div class="alert alert-info">Showing tickets for <strong>&quot;<?php echo htmlspecialchars($search) ?>&quot;</strong> &mdash; <a href="<?php $site->urlTo('/tickets', true) ?>">Click here to reset filters</a></div>
-						<?php endif ?>
+						<?php elseif ($client_id || $project_id): ?>
+							<div class="alert alert-info">Filtering by client and/or project &mdash; <a href="<?php $site->urlTo('/tickets', true) ?>">Click here to reset filters</a></div>
+						<?php endif; ?>
 						<!--  -->
 						<div class="list-group">
 							<?php
