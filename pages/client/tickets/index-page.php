@@ -153,17 +153,25 @@
 							<?php
 								if ($tickets):
 									foreach ($tickets as $ticket):
-										$site->user = Users::get($ticket->user_id);
+										$ticket_user = Users::get($ticket->user_id);
 										$reply_count = $ticket->replies;
+
+										$ticket_project = Projects::get($ticket->project_id);
+										$ticket_client = $ticket_project? $ticket_project->clients[0] : '';
 							?>
 							<a href="<?php $site->urlTo("/tickets/{$ticket->id}", true); ?>" class="list-group-item">
 								<span class="fa fa-<?php echo ($ticket->status == 'Open' ? 'check' : 'times'); ?>-circle text-<?php echo ($ticket->status == 'Open' ? 'success' : 'danger'); ?>" title="<?php echo $ticket->status; ?> Ticket"></span>
 								<p class="list-group-item-text">
 									<span class="text-muted pull-right">#<?php echo $ticket->id; ?></span>
 									<strong><?php echo htmlspecialchars($ticket->subject); ?></strong>
+									<small class="text-muted">
+										<?php if($ticket_project): ?>
+											<?php echo $ticket_client->name; ?> &mdash; <?php echo $ticket_project->name; ?>
+										<?php endif; ?>
+									</small>
 								</p>
 								<p class="list-group-item-text">
-									<small><span class="text-muted">Opened by</span> <?php echo $site->user->nickname; ?> <span class="text-muted">on <?php echo date('M j', strtotime($ticket->created)) ?>. <i class="fa fa-comments"></i></span> <?php echo $reply_count; ?> <?php echo ($reply_count == 1 ? 'comment' : 'comments') ?></small>
+									<small><span class="text-muted">Opened by</span> <?php echo $ticket_user->nickname; ?> <span class="text-muted">on <?php echo date('M j', strtotime($ticket->created)) ?>. <i class="fa fa-comments"></i></span> <?php echo $reply_count; ?> <?php echo ($reply_count == 1 ? 'comment' : 'comments') ?></small>
 								</p>
 							</a>
 							<?php
