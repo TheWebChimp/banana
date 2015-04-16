@@ -181,8 +181,19 @@
 									<span class="text-muted pull-right">#<?php echo $ticket->id; ?></span>
 									<strong><?php echo htmlspecialchars($ticket->subject); ?></strong>
 									<small class="text-muted">
-										<?php if($ticket_project): ?>
-											<?php echo $ticket_client->name; ?> &mdash; <?php echo $ticket_project->name; ?>
+										<?php
+											if($ticket_project){
+												echo $ticket_project->name;
+											}
+
+											if($ticket_project && $ticket_client){
+												echo " &mdash; ";
+											}
+
+											if($ticket_client){
+												echo $ticket_client->name;
+											}
+										?>
 										<?php endif; ?>
 									</small>
 								</p>
