@@ -244,6 +244,50 @@
 			}
 		}
 
+		function editReplyAction($id) {
+			global $site;
+			$request = $site->mvc->getRequest();
+			$reply = Tickets::getReply($id);
+			$ticket = Tickets::get($id);
+			switch ($request->type) {
+				case 'get':
+					$this->view->render('tickets/edit-reply-page', array('ticket' => $ticket, 'reply' => $reply));
+					break;
+				case 'post':
+					# Get parameters
+					$token = $request->post('token');
+					$ticket_id = $request->post('ticket_id');
+					$details = $request->post('details');
+					$attachments = $request->post('attachments', array());
+					# Validate anti-csrf token
+					if (! $site->csrf->checkToken($token) ) {
+						$site->errorMessage('Invalid request data');
+						exit;
+					}
+					# Validate fields
+					$validator = Validator::newInstance()
+						->addRule('ticket_id', $ticket_id)
+						->addRule('details', $details)
+						->validate();
+					if (! $validator->isValid() ) {
+						$site->errorMessage( 'The following fields are required: ' . implode( ',', $validator->getErrors() ) );
+						exit;
+					}
+					# Create new reply
+					$user = Users::getCurrentUser();
+					$reply->details = $details;
+					$reply->attachments = serialize($attachments);
+					$reply->save();
+					# Update ticket
+					$ticket = Tickets::get($ticket_id);
+					$ticket->update();
+					# And redirect
+					$site->redirectTo( $site->urlTo("/tickets/{$ticket_id}") );
+					exit;
+					break;
+			}
+		}
+
 		function unreplyAction($id) {
 			global $site;
 			$request = $site->mvc->getRequest();

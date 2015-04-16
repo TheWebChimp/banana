@@ -91,7 +91,7 @@
 									if ( $reply->user_id == Users::getCurrentUserId() || Users::currentUserCan('manage_options') ) {
 										$unreply = '<div class="pull-right">
 											<a href="'.$site->urlTo("/tickets/unreply/{$reply->id}").'" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i></a>&nbsp;
-											<a href="'.$site->urlTo("/tickets/unreply/{$reply->id}").'" class="btn btn-success btn-xs pull-right"><i class="fa fa-pencil"></i></a>
+											<a href="'.$site->urlTo("/tickets/edit-reply/{$reply->id}").'" class="btn btn-success btn-xs pull-right"><i class="fa fa-pencil"></i></a>
 											</div>';
 									}
 						?>

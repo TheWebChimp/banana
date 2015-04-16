@@ -1,4 +1,3 @@
-
 <?php $site->getParts(array('client/header_html', 'client/header')) ?>
 
 	<section>
