@@ -172,6 +172,7 @@
 					$subject = $request->post('subject');
 					$details = $request->post('details');
 					$project_id = $request->post('project_id');
+					$client_id = $request->post('client_id');
 					$attachments = $request->post('attachments', array());
 					# Validate anti-csrf token
 					if (! $site->csrf->checkToken($token) ) {
@@ -190,10 +191,11 @@
 					# Update ticket
 					$ticket = new Ticket();
 					$ticket->project_id = $project_id;
-					$ticket->client_id = 0;
+					$ticket->client_id = $client_id;
 					$ticket->subject = $subject;
 					$ticket->details = $details;
 					$ticket->attachments = serialize($attachments);
+					$ticket->status = 'Open';
 					$ticket->save();
 					# And redirect
 					$site->redirectTo( $site->urlTo("/tickets/{$ticket->id}") );

@@ -6,7 +6,7 @@
 	$parsedown = new Parsedown();
 
 	$ticket_project = Projects::get($ticket->project_id);
-	$ticket_client = $ticket_project? $ticket_project->clients[0] : '';
+	$ticket_client = Clients::get($ticket->client_id);;
 ?>
 <?php $site->getParts(array('client/header_html', 'client/header')) ?>
 

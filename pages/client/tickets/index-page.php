@@ -172,8 +172,8 @@
 										$ticket_user = Users::get($ticket->user_id);
 										$reply_count = $ticket->replies;
 
+										$ticket_client = Clients::get($ticket->client_id);
 										$ticket_project = Projects::get($ticket->project_id);
-										$ticket_client = $ticket_project? $ticket_project->clients[0] : '';
 							?>
 							<a href="<?php $site->urlTo("/tickets/{$ticket->id}", true); ?>" class="list-group-item">
 								<span class="fa fa-<?php echo ($ticket->status == 'Open' ? 'check' : 'times'); ?>-circle text-<?php echo ($ticket->status == 'Open' ? 'success' : 'danger'); ?>" title="<?php echo $ticket->status; ?> Ticket"></span>
@@ -194,7 +194,6 @@
 												echo $ticket_client->name;
 											}
 										?>
-										<?php endif; ?>
 									</small>
 								</p>
 								<p class="list-group-item-text">
