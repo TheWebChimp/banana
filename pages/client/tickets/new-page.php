@@ -17,8 +17,8 @@
 						<div class="col-right">
 							<!--  -->
 							<div class="form-group">
-								<label for="project_id" class="control-label">Client</label>
-								<select name="project_id" id="project_id" class="form-control">
+								<label for="client_id" class="control-label">Client</label>
+								<select name="client_id" id="client_id" class="form-control">
 									<option value="">None</option>
 									<?php
 										$clients = Users::currentUserCan('manage_options') ? Clients::all() : $site->user->clients;
@@ -49,7 +49,7 @@
 								</select>
 							</div>
 							<div class="text-right">
-								<button type="submit" class="btn btn-primary">Update ticket</button>
+								<button type="submit" class="btn btn-primary">Create ticket</button>
 							</div>
 						</div>
 						<div class="col-left">
