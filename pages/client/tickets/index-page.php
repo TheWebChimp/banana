@@ -198,7 +198,7 @@
 								</p>
 								<p class="list-group-item-text">
 									<small><span class="text-muted">Opened by</span> <?php echo $ticket_user->nickname; ?> <span class="text-muted">on <?php echo date('M j', strtotime($ticket->created)) ?>. <i class="fa fa-comments"></i></span> <?php echo $reply_count; ?> <?php echo ($reply_count == 1 ? 'comment' : 'comments') ?></small>
-									<?php if ($ticket->due): ?>
+									<?php if ($ticket->due != '0000-00-00 00:00:00'): ?>
 										<br><small><span class="text-muted">Due by</span> <strong><?php echo date('d/m/Y', strtotime($ticket->due)); ?></strong></small>
 									<?php endif ?>
 								</p>
