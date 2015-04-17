@@ -15,6 +15,14 @@
 					<div class="cols right-fixed">
 						<div class="col-right">
 							<div class="form-group">
+								<label for="due" class="control-label">Due date</label>
+								<div class="input-group">
+									<input type="text" class="form-control" name="due" id="due" data-select="datepicker" value="<?php echo ($ticket->due ? date('d/m/Y', strtotime($ticket->due)) : '') ?>">
+									<span class="input-group-btn"><button type="button" class="btn btn-primary" data-toggle="datepicker"><i class="fa fa-calendar"></i></button></span>
+								</div>
+							</div>
+							<!--  -->
+							<div class="form-group">
 								<label for="client_id" class="control-label">Client</label>
 								<select name="client_id" id="client_id" class="form-control">
 									<option value="">None</option>

@@ -71,50 +71,6 @@
 			}
 		}
 
-		function submitAction() {
-			global $site;
-			$request = $site->mvc->getRequest();
-			switch ($request->type) {
-				case 'post':
-					# Get parameters
-					$token = $request->post('token');
-					$subject = $request->post('subject');
-					$details = $request->post('details');
-					$project_id = $request->post('project_id');
-					$client_id = $request->post('client_id');
-					$attachments = $request->post('attachments', array());
-					# Validate anti-csrf token
-					if (! $site->csrf->checkToken($token) ) {
-						$site->errorMessage('Invalid request data');
-						exit;
-					}
-					# Validate fields
-					$validator = Validator::newInstance()
-						->addRule('subject', $subject)
-						->addRule('details', $details)
-						->validate();
-					if (! $validator->isValid() ) {
-						$site->errorMessage( 'The following fields are required: ' . implode( ',', $validator->getErrors() ) );
-						exit;
-					}
-					# Create new ticket
-					$user = Users::getCurrentUser();
-					$ticket = new Ticket();
-					$ticket->user_id = $user->id;
-					$ticket->project_id = $project_id;
-					$ticket->client_id = $client_id;
-					$ticket->subject = $subject;
-					$ticket->details = $details;
-					$ticket->attachments = serialize($attachments);
-					$ticket->status = 'Open';
-					$ticket->save();
-					# And redirect
-					$site->redirectTo( $site->urlTo("/tickets/{$ticket->id}") );
-					exit;
-					break;
-			}
-		}
-
 		function editAction($id) {
 			global $site;
 			$request = $site->mvc->getRequest();
@@ -128,6 +84,7 @@
 					$token = $request->post('token');
 					$subject = $request->post('subject');
 					$details = $request->post('details');
+					$due = $request->post('due');
 					$client_id = $request->post('client_id');
 					$project_id = $request->post('project_id');
 					$attachments = $request->post('attachments', array());
@@ -148,6 +105,7 @@
 					# Update ticket
 					$ticket->project_id = $project_id;
 					$ticket->client_id = $client_id;
+					$ticket->due = date( 'Y-m-d', strtotime( str_replace('/', '-', $due) ) );
 					$ticket->subject = $subject;
 					$ticket->details = $details;
 					$ticket->attachments = serialize($attachments);
@@ -173,6 +131,7 @@
 					$details = $request->post('details');
 					$project_id = $request->post('project_id');
 					$client_id = $request->post('client_id');
+					$due = $request->post('due');
 					$attachments = $request->post('attachments', array());
 					# Validate anti-csrf token
 					if (! $site->csrf->checkToken($token) ) {
@@ -192,6 +151,7 @@
 					$ticket = new Ticket();
 					$ticket->project_id = $project_id;
 					$ticket->client_id = $client_id;
+					$ticket->due = date( 'Y-m-d', strtotime( str_replace('/', '-', $due) ) );
 					$ticket->subject = $subject;
 					$ticket->details = $details;
 					$ticket->attachments = serialize($attachments);

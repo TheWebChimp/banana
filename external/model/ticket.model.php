@@ -11,6 +11,7 @@
 		public $attachments;
 		public $status;
 		public $replies;
+		public $due;
 		public $created;
 		public $modified;
 
@@ -29,6 +30,7 @@
 				$this->attachments = '';
 				$this->status = '';
 				$this->replies = 0;
+				$this->due = '0000-00-00 00:00:00';
 				$this->created = $now;
 				$this->modified = $now;
 			} else {
@@ -42,9 +44,9 @@
 			$dbh = $site->getDatabase();
 			$this->modificado = date('Y-m-d H:i:s');
 			try {
-				$sql = "INSERT INTO banana_ticket (id, user_id, project_id, client_id, subject, details, attachments, status, replies, created, modified)
-						VALUES (:id, :user_id, :project_id, :client_id, :subject, :details, :attachments, :status, :replies, :created, :modified)
-						ON DUPLICATE KEY UPDATE project_id = :project_id, client_id = :client_id, subject = :subject, details = :details, attachments = :attachments, status = :status, modified = :modified";
+				$sql = "INSERT INTO banana_ticket (id, user_id, project_id, client_id, subject, details, attachments, status, replies, due, created, modified)
+						VALUES (:id, :user_id, :project_id, :client_id, :subject, :details, :attachments, :status, :replies, :due, :created, :modified)
+						ON DUPLICATE KEY UPDATE project_id = :project_id, client_id = :client_id, subject = :subject, details = :details, attachments = :attachments, status = :status, due = :due, modified = :modified";
 				$stmt = $dbh->prepare($sql);
 				$stmt->bindValue(':id', $this->id);
 				$stmt->bindValue(':user_id', $this->user_id);
@@ -55,6 +57,7 @@
 				$stmt->bindValue(':attachments', $this->attachments);
 				$stmt->bindValue(':status', $this->status);
 				$stmt->bindValue(':replies', $this->replies);
+				$stmt->bindValue(':due', $this->due);
 				$stmt->bindValue(':created', $this->created);
 				$stmt->bindValue(':modified', $this->modified);
 				$stmt->execute();
@@ -238,7 +241,7 @@
 			$ret = false;
 			$dbh = $site->getDatabase();
 			try {
-				$sql = "SELECT id, user_id, project_id, client_id, subject, details, attachments, status, replies, created, modified FROM banana_ticket WHERE id = :id";
+				$sql = "SELECT id, user_id, project_id, client_id, subject, details, attachments, status, replies, due, created, modified FROM banana_ticket WHERE id = :id";
 				$stmt = $dbh->prepare($sql);
 				$stmt->bindValue(':id', $id);
 				$stmt->setFetchMode(PDO::FETCH_CLASS, 'Ticket');
@@ -275,7 +278,7 @@
 			$dbh = $site->getDatabase();
 			$offset = $show * ($page - 1);
 			# Sanity checks
-			$by = in_array($by, array('id', 'user_id', 'project_id', 'client_id', 'subject', 'details', 'attachments', 'status', 'replies', 'created', 'modified') ) ? $by : false;
+			$by = in_array($by, array('id', 'user_id', 'project_id', 'client_id', 'subject', 'details', 'attachments', 'status', 'replies', 'due', 'created', 'modified') ) ? $by : false;
 			$sort = strtoupper($sort);
 			$sort = in_array($sort, array('ASC', 'DESC') ) ? $sort : false;
 			$offset = is_numeric($offset) ? $offset : false;
@@ -284,7 +287,7 @@
 				return $ret;
 			}
 			try {
-				$sql = "SELECT id, user_id, project_id, client_id, subject, details, attachments, status, replies, created, modified FROM banana_ticket ORDER BY {$by} {$sort} LIMIT {$offset},{$show}";
+				$sql = "SELECT id, user_id, project_id, client_id, subject, details, attachments, status, replies, due, created, modified FROM banana_ticket ORDER BY {$by} {$sort} LIMIT {$offset},{$show}";
 				$stmt = $dbh->prepare($sql);
 				$stmt->setFetchMode(PDO::FETCH_CLASS, 'Ticket');
 				$stmt->execute();
@@ -307,7 +310,7 @@
 			$dbh = $site->getDatabase();
 			$offset = $show * ($page - 1);
 			# Sanity checks
-			$by = in_array($by, array('id', 'user_id', 'project_id', 'client_id', 'subject', 'details', 'attachments', 'status', 'replies', 'created', 'modified') ) ? $by : false;
+			$by = in_array($by, array('id', 'user_id', 'project_id', 'client_id', 'subject', 'details', 'attachments', 'status', 'replies', 'due', 'created', 'modified') ) ? $by : false;
 			$sort = strtoupper($sort);
 			$sort = in_array($sort, array('ASC', 'DESC') ) ? $sort : false;
 			$offset = is_numeric($offset) ? $offset : false;
@@ -316,7 +319,7 @@
 				return $ret;
 			}
 			try {
-				$sql = "SELECT id, user_id, project_id, client_id, subject, details, attachments, status, replies, created, modified FROM banana_ticket WHERE {$conditions} ORDER BY {$by} {$sort} LIMIT {$offset},{$show}";
+				$sql = "SELECT id, user_id, project_id, client_id, subject, details, attachments, status, replies, due, created, modified FROM banana_ticket WHERE {$conditions} ORDER BY {$by} {$sort} LIMIT {$offset},{$show}";
 				$stmt = $dbh->prepare($sql);
 				$stmt->setFetchMode(PDO::FETCH_CLASS, 'Ticket');
 				$stmt->execute();
