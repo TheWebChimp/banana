@@ -64,53 +64,69 @@
 
 			global $site;
 			$request = $site->mvc->getRequest();
-			$dbh = $site->getDatabase();
-			//
-			$filter = $request->param('filter', 'open');
-			$sort = $request->param('sort', 'newest');
-			$page = $request->param('page', '1');
-			$show = $request->param('show', '15');
-			$search = $request->param('search');
-			$client_id = $request->param('client_id');
-			$project_id = $request->param('project_id');
-			//
-			$search_str = $search ? $dbh->quote("%{$search}%") : '';
-			//
-			$page = is_numeric($page) ? $page : 1;
-			$show = is_numeric($show) ? $show : 15;
-			//
-			$sort_opts = array(
-				'newest' => 'created DESC',
-				'oldest' => 'created ASC',
-				'recently-updated' => 'modified DESC',
-				'least-updated' => 'modified ASC',
-				'most-replies' => 'replies DESC',
-				'least-replies' => 'replies ASC'
-			);
-			//
-			$sort = isset( $sort_opts[$sort] ) ? $sort : 'newest';
-			$sort_order = get_item($sort_opts, $sort, 'created DESC');
-			$params = explode(' ', $sort_order);
-			//
-			if ( Users::currentUserCan('manage_options') ) {
-				$conditions = "status = '{$filter}'";
-				$conditions .= $search_str ? " AND subject LIKE {$search_str}" : '';
-				$conditions .= is_numeric($client_id) ? " AND client_id = {$client_id}" : '';
-				$conditions .= is_numeric($project_id) ? " AND project_id = {$project_id}" : '';
-				//
-				$tickets = Tickets::rawWhere($conditions, $page, $show, $params[1], $params[0]);
-				$total = Tickets::count($conditions);
-			} else {
-				$uid = Users::getCurrentUserId();
-				$conditions = "status = '{$filter}' AND user_id = {$uid}";
-				$conditions .= $search_str ? " AND subject LIKE {$search_str}" : '';
-				$conditions .= is_numeric($client_id) ? " AND client_id = {$client_id}" : '';
-				$conditions .= is_numeric($project_id) ? " AND project_id = {$project_id}" : '';
-				//
-				$tickets = Tickets::rawWhere($conditions, $page, $show, $params[1], $params[0]);
-				$total = Tickets::count($conditions);
+			// $dbh = $site->getDatabase();
+			// //
+			// $filter = $request->param('filter', 'open');
+			// $sort = $request->param('sort', 'newest');
+			// $page = $request->param('page', '1');
+			// $show = $request->param('show', '15');
+			// $search = $request->param('search');
+			// $client_id = $request->param('client_id');
+			// $project_id = $request->param('project_id');
+			// //
+			// $search_str = $search ? $dbh->quote("%{$search}%") : '';
+			// //
+			// $page = is_numeric($page) ? $page : 1;
+			// $show = is_numeric($show) ? $show : 15;
+			// //
+			// $sort_opts = array(
+			// 	'newest' => 'created DESC',
+			// 	'oldest' => 'created ASC',
+			// 	'recently-updated' => 'modified DESC',
+			// 	'least-updated' => 'modified ASC',
+			// 	'most-replies' => 'replies DESC',
+			// 	'least-replies' => 'replies ASC'
+			// );
+			// //
+			// $sort = isset( $sort_opts[$sort] ) ? $sort : 'newest';
+			// $sort_order = get_item($sort_opts, $sort, 'created DESC');
+			// $params = explode(' ', $sort_order);
+			// //
+			// if ( Users::currentUserCan('manage_options') ) {
+			// 	$conditions = "status = '{$filter}'";
+			// 	$conditions .= $search_str ? " AND subject LIKE {$search_str}" : '';
+			// 	$conditions .= is_numeric($client_id) ? " AND client_id = {$client_id}" : '';
+			// 	$conditions .= is_numeric($project_id) ? " AND project_id = {$project_id}" : '';
+			// 	//
+			// 	$tickets = Tickets::rawWhere($conditions, $page, $show, $params[1], $params[0]);
+			// 	$total = Tickets::count($conditions);
+			// } else {
+			// 	$uid = Users::getCurrentUserId();
+			// 	$conditions = "status = '{$filter}' AND user_id = {$uid}";
+			// 	$conditions .= $search_str ? " AND subject LIKE {$search_str}" : '';
+			// 	$conditions .= is_numeric($client_id) ? " AND client_id = {$client_id}" : '';
+			// 	$conditions .= is_numeric($project_id) ? " AND project_id = {$project_id}" : '';
+			// 	//
+			// 	$tickets = Tickets::rawWhere($conditions, $page, $show, $params[1], $params[0]);
+			// 	$total = Tickets::count($conditions);
+			// }
+			// $this->view->render('tickets/calendar-page', array('tickets' => $tickets, 'client_id' => $client_id, 'project_id' => $project_id, 'search' => $search, 'page' => $page, 'show' => $show, 'filter' => $filter, 'sort' => $sort, 'total' => $total));
+			$tickets = Tickets::all();
+			$events = array();
+			foreach ($tickets as $ticket) {
+				$start = $ticket->start ? $ticket->start : $ticket->created;
+				$end = $ticket->due ? $ticket->due : $ticket->created;
+				$events[] = array(
+					'id' => $ticket->id,
+					'title' => $ticket->subject,
+					'url' => $site->urlTo("/tickets/{$ticket->id}"),
+					'class' => 'event-important',
+					'start' => strtotime($start) * 1000,
+					'end' => strtotime($end) * 1000
+				);
 			}
-			$this->view->render('tickets/calendar-page', array('tickets' => $tickets, 'client_id' => $client_id, 'project_id' => $project_id, 'search' => $search, 'page' => $page, 'show' => $show, 'filter' => $filter, 'sort' => $sort, 'total' => $total));
+			$site->addScriptVar('calendarEvents', $events);
+			$this->view->render('tickets/calendar-page');
 		}
 
 		function showAction($id) {
@@ -137,6 +153,7 @@
 					$token = $request->post('token');
 					$subject = $request->post('subject');
 					$details = $request->post('details');
+					$start = $request->post('start');
 					$due = $request->post('due');
 					$client_id = $request->post('client_id');
 					$project_id = $request->post('project_id');
@@ -158,6 +175,7 @@
 					# Update ticket
 					$ticket->project_id = $project_id;
 					$ticket->client_id = $client_id;
+					$ticket->start = date( 'Y-m-d', strtotime( str_replace('/', '-', $start) ) );
 					$ticket->due = date( 'Y-m-d', strtotime( str_replace('/', '-', $due) ) );
 					$ticket->subject = $subject;
 					$ticket->details = $details;
@@ -184,6 +202,7 @@
 					$details = $request->post('details');
 					$project_id = $request->post('project_id');
 					$client_id = $request->post('client_id');
+					$start = $request->post('start');
 					$due = $request->post('due');
 					$attachments = $request->post('attachments', array());
 					# Validate anti-csrf token
@@ -206,6 +225,7 @@
 					$ticket->user_id =		$user->id;
 					$ticket->project_id =	$project_id;
 					$ticket->client_id =	$client_id;
+					$ticket->start =		date( 'Y-m-d', strtotime( str_replace('/', '-', $start) ) );
 					$ticket->due =			date( 'Y-m-d', strtotime( str_replace('/', '-', $due) ) );
 					$ticket->subject =		$subject;
 					$ticket->details =		$details;

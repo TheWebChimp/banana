@@ -1,13 +1,13 @@
 <?php
-	$dbh = $site->getDatabase();
-	$conditions = '1';
-	$search_str = $search ? $dbh->quote("%{$search}%") : '';
-	$conditions .= $search_str ? " AND subject LIKE {$search_str}" : '';
-	$conditions .= is_numeric($client_id) ? " AND client_id = {$client_id}" : '';
-	$conditions .= is_numeric($project_id) ? " AND project_id = {$project_id}" : '';
-	$open = Tickets::count("{$conditions} AND status = 'Open'");
-	$closed = Tickets::count("{$conditions} AND status = 'Closed'");
-	$labels = TicketTags::where('type', '=', 'Label');
+	// $dbh = $site->getDatabase();
+	// $conditions = '1';
+	// $search_str = $search ? $dbh->quote("%{$search}%") : '';
+	// $conditions .= $search_str ? " AND subject LIKE {$search_str}" : '';
+	// $conditions .= is_numeric($client_id) ? " AND client_id = {$client_id}" : '';
+	// $conditions .= is_numeric($project_id) ? " AND project_id = {$project_id}" : '';
+	// $open = Tickets::count("{$conditions} AND status = 'Open'");
+	// $closed = Tickets::count("{$conditions} AND status = 'Closed'");
+	// $labels = TicketTags::where('type', '=', 'Label');
 ?>
 <?php $site->getParts(array('client/header_html', 'client/header')) ?>
 
@@ -44,7 +44,7 @@
 						<div id="tickets-calendar"></div>
 					</div>
 					<div class="col-md-3">
-
+						<!--  -->
 					</div>
 				</div>
 			</div>

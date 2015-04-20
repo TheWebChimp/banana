@@ -181,7 +181,7 @@ ClientModuleTickets = ClientModule.extend({
 
 			var calendar = $("#tickets-calendar").calendar({
 				tmpl_path: constants.siteUrl + '/parts/calendar/',
-				events_source: function () { return []; },
+				events_source: calendarEvents || [],
 				onAfterViewLoad: function(view) {
 					$('.page-header h3').text(this.getTitle());
 					$('.btn-group button').removeClass('active');

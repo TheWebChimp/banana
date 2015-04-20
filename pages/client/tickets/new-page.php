@@ -16,6 +16,13 @@
 					<div class="cols right-fixed">
 						<div class="col-right">
 							<div class="form-group">
+								<label for="start" class="control-label">Start date</label>
+								<div class="input-group">
+									<input type="text" class="form-control" name="start" id="start" data-select="datepicker">
+									<span class="input-group-btn"><button type="button" class="btn btn-primary" data-toggle="datepicker"><i class="fa fa-calendar"></i></button></span>
+								</div>
+							</div>
+							<div class="form-group">
 								<label for="due" class="control-label">Due date</label>
 								<div class="input-group">
 									<input type="text" class="form-control" name="due" id="due" data-select="datepicker">

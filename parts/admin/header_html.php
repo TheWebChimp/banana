@@ -16,6 +16,7 @@
 			}
 		};
 	</script>
+	<?php $site->includeScriptVars() ?>
 	<?php $site->includeStyles() ?>
 	<?php $site->includeScript('modernizr'); ?>
 </head>

@@ -10,6 +10,7 @@
 			ajaxUrl: '<?php $site->urlTo("/ajax", true) ?>'
 		};
 	</script>
+	<?php $site->includeScriptVars() ?>
 	<?php $site->includeStyles() ?>
 	<?php $site->includeScript('modernizr'); ?>
 	<meta name="csrf-token" content="<?php $site->hashToken( $_SESSION['csrf_secret'], true ); ?>">
