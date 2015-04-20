@@ -60,6 +60,59 @@
 			$this->view->render('tickets/index-page', array('tickets' => $tickets, 'client_id' => $client_id, 'project_id' => $project_id, 'search' => $search, 'page' => $page, 'show' => $show, 'filter' => $filter, 'sort' => $sort, 'total' => $total));
 		}
 
+		function calendarAction() {
+
+			global $site;
+			$request = $site->mvc->getRequest();
+			$dbh = $site->getDatabase();
+			//
+			$filter = $request->param('filter', 'open');
+			$sort = $request->param('sort', 'newest');
+			$page = $request->param('page', '1');
+			$show = $request->param('show', '15');
+			$search = $request->param('search');
+			$client_id = $request->param('client_id');
+			$project_id = $request->param('project_id');
+			//
+			$search_str = $search ? $dbh->quote("%{$search}%") : '';
+			//
+			$page = is_numeric($page) ? $page : 1;
+			$show = is_numeric($show) ? $show : 15;
+			//
+			$sort_opts = array(
+				'newest' => 'created DESC',
+				'oldest' => 'created ASC',
+				'recently-updated' => 'modified DESC',
+				'least-updated' => 'modified ASC',
+				'most-replies' => 'replies DESC',
+				'least-replies' => 'replies ASC'
+			);
+			//
+			$sort = isset( $sort_opts[$sort] ) ? $sort : 'newest';
+			$sort_order = get_item($sort_opts, $sort, 'created DESC');
+			$params = explode(' ', $sort_order);
+			//
+			if ( Users::currentUserCan('manage_options') ) {
+				$conditions = "status = '{$filter}'";
+				$conditions .= $search_str ? " AND subject LIKE {$search_str}" : '';
+				$conditions .= is_numeric($client_id) ? " AND client_id = {$client_id}" : '';
+				$conditions .= is_numeric($project_id) ? " AND project_id = {$project_id}" : '';
+				//
+				$tickets = Tickets::rawWhere($conditions, $page, $show, $params[1], $params[0]);
+				$total = Tickets::count($conditions);
+			} else {
+				$uid = Users::getCurrentUserId();
+				$conditions = "status = '{$filter}' AND user_id = {$uid}";
+				$conditions .= $search_str ? " AND subject LIKE {$search_str}" : '';
+				$conditions .= is_numeric($client_id) ? " AND client_id = {$client_id}" : '';
+				$conditions .= is_numeric($project_id) ? " AND project_id = {$project_id}" : '';
+				//
+				$tickets = Tickets::rawWhere($conditions, $page, $show, $params[1], $params[0]);
+				$total = Tickets::count($conditions);
+			}
+			$this->view->render('tickets/calendar-page', array('tickets' => $tickets, 'client_id' => $client_id, 'project_id' => $project_id, 'search' => $search, 'page' => $page, 'show' => $show, 'filter' => $filter, 'sort' => $sort, 'total' => $total));
+		}
+
 		function showAction($id) {
 			global $site;
 			$request = $site->mvc->getRequest();
@@ -149,13 +202,16 @@
 					}
 					# Update ticket
 					$ticket = new Ticket();
-					$ticket->project_id = $project_id;
-					$ticket->client_id = $client_id;
-					$ticket->due = date( 'Y-m-d', strtotime( str_replace('/', '-', $due) ) );
-					$ticket->subject = $subject;
-					$ticket->details = $details;
-					$ticket->attachments = serialize($attachments);
-					$ticket->status = 'Open';
+					$user = Users::getCurrentUser();
+					$ticket->user_id =		$user->id;
+					$ticket->project_id =	$project_id;
+					$ticket->client_id =	$client_id;
+					$ticket->due =			date( 'Y-m-d', strtotime( str_replace('/', '-', $due) ) );
+					$ticket->subject =		$subject;
+					$ticket->details =		$details;
+					$ticket->attachments =	serialize($attachments);
+					$ticket->status =		'Open';
+
 					$ticket->save();
 					# And redirect
 					$site->redirectTo( $site->urlTo("/tickets/{$ticket->id}") );

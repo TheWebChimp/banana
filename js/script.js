@@ -61,6 +61,20 @@ var banana = Banana({
 						break;
 				}
 				break;
+
+			// Tickets ----------------------------------------------------------------------------
+			case 'tickets':
+				switch (this.mvc.action) {
+					case 'calendar':
+
+						var calendar = $("#tickets-calendar").calendar({
+							tmpl_path: constants.siteUrl + '/parts/calendar/',
+							events_source: function () { return []; },
+							view: 'month'
+						});
+						break;
+				}
+				break;
 		}
 		// Y los generales
 		// $('')

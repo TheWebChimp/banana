@@ -176,6 +176,44 @@ ClientModuleTickets = ClientModule.extend({
 		//
 	},
 	onReady: function() {
+
+		if(constants.mvc.action == 'calendar') {
+
+			var calendar = $("#tickets-calendar").calendar({
+				tmpl_path: constants.siteUrl + '/parts/calendar/',
+				events_source: function () { return []; },
+				onAfterViewLoad: function(view) {
+					$('.page-header h3').text(this.getTitle());
+					$('.btn-group button').removeClass('active');
+					$('button[data-calendar-view="' + view + '"]').addClass('active');
+				},
+			});
+
+			calendar.setLanguage('es-MX');
+			calendar.view();
+
+			$('.btn-group button[data-calendar-nav]').each(function() {
+				var $this = $(this);
+				$this.click(function() {
+					calendar.navigate($this.data('calendar-nav'));
+				});
+			});
+
+			$('.btn-group button[data-calendar-view]').each(function() {
+				var $this = $(this);
+				$this.click(function() {
+					calendar.view($this.data('calendar-view'));
+				});
+			});
+
+			$('#first_day').change(function(){
+				var value = $(this).val();
+				value = value.length ? parseInt(value) : null;
+				calendar.setOptions({first_day: value});
+				calendar.view();
+			});
+		}
+
 		$('#add-label-form').ajaxForm({
 			dataType: 'json',
 			beforeSubmit: function(data, form) {
