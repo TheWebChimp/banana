@@ -16,8 +16,31 @@
 	$site->registerStyle('codemirror.monokai', $site->baseUrl('/css/codemirror.monokai.css') );
 	$site->registerStyle('dropzone', $site->baseUrl('/css/dropzone.css') );
 	$site->registerStyle('jquery.plugins', $site->baseUrl('/css/jquery.plugins.css') );
-	$site->registerStyle('banana.client', $site->baseUrl('/css/banana.client.css'), array('codemirror', 'codemirror.monokai', 'codemirror.neo', 'twitter-bootstrap', 'webfont.open-sans', 'webfont.font-awesome', 'webfont.ubuntu-mono', 'sticky-footer', 'jquery.plugins') );
-	$site->registerStyle('banana.admin', $site->baseUrl('/css/banana.admin.css'), array('codemirror', 'codemirror.monokai', 'codemirror.neo', 'twitter-bootstrap', 'dropzone', 'webfont.open-sans', 'webfont.font-awesome', 'webfont.ubuntu-mono', 'sticky-footer') );
+
+	$site->registerStyle('banana.client', $site->baseUrl('/css/banana.client.css'), array(
+		'underscore',
+		'codemirror',
+		'codemirror.monokai',
+		'codemirror.neo',
+		'twitter-bootstrap',
+		'webfont.open-sans',
+		'webfont.font-awesome',
+		'webfont.ubuntu-mono',
+		'sticky-footer',
+		'jquery.plugins'
+	));
+
+	$site->registerStyle('banana.admin', $site->baseUrl('/css/banana.admin.css'), array(
+		'codemirror',
+		'codemirror.monokai',
+		'codemirror.neo',
+		'twitter-bootstrap',
+		'dropzone',
+		'webfont.open-sans',
+		'webfont.font-awesome',
+		'webfont.ubuntu-mono',
+		'sticky-footer'
+	));
 
 	# Include scripts
 	$site->registerScript('xtag', $site->baseUrl('/js/x-tag.min.js') );
@@ -29,7 +52,7 @@
 	$site->registerScript('dropzone', $site->baseUrl('/js/dropzone.js'), array('jquery') );
 	$site->registerScript('jquery-ui', $site->baseUrl('/js/jquery-ui-1.10.3.min.js'), array('jquery') );
 	$site->registerScript('jquery.plugins', $site->baseUrl('/js/jquery.plugins.js'), array('jquery') );
-	$site->registerScript('jquery.lazyload', $site->baseUrl('/js/jquery.lazyload.min.js'), array('jquery') );	
+	$site->registerScript('jquery.lazyload', $site->baseUrl('/js/jquery.lazyload.min.js'), array('jquery') );
 	$site->registerScript('jquery.zclip', $site->baseUrl('/js/jquery.zclip.min.js'), array('jquery') );
 	$site->registerScript('banana.client', $site->baseUrl('/js/banana.client.js'), array('codemirror', 'class', 'marked', 'jquery.plugins', 'canvasjs', 'jquery.lazyload', 'jquery.form', 'twitter-bootstrap', 'jquery.zclip') );
 	$site->registerScript('banana.admin', $site->baseUrl('/js/banana.admin.js'), array('codemirror', 'class', 'jquery.plugins', 'canvasjs', 'jquery.lazyload', 'jquery.form', 'dropzone', 'jquery-ui', 'xtag-components', 'twitter-bootstrap') );
