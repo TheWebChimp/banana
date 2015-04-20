@@ -69,6 +69,7 @@
 								<button type="submit" class="btn btn-primary">Search tickets</button>
 							</div>
 						</form>
+						<p><a href="<?php $site->urlTo('/tickets/calendar', true) ?>" class="btn btn-default"><i class="fa fa-calendar-o"></i> Switch to Calendar view</a></p>
 						<?php
 							if ( Users::currentUserCan('manage_options') && 0 ):
 						?>
@@ -198,10 +199,18 @@
 									</small>
 								</p>
 								<p class="list-group-item-text">
-									<small><span class="text-muted">
-										Opened by</span> <?php echo $ticket_user? $ticket_user->nickname : '-'; ?> <span class="text-muted">on <?php echo date('M j', strtotime($ticket->created)) ?>. <i class="fa fa-comments"></i></span> <?php echo $reply_count; ?> <?php echo ($reply_count == 1 ? 'comment' : 'comments') ?></small>
+									<small>
+										<span class="text-muted">Opened by</span> <?php echo $ticket_user? $ticket_user->nickname : '-'; ?> <span class="text-muted">on <?php echo date('M j', strtotime($ticket->created)) ?>. <i class="fa fa-comments"></i></span>
+										<?php echo $reply_count; ?> <?php echo ($reply_count == 1 ? 'comment' : 'comments') ?>
+									</small>
 									<?php if ($ticket->due != '0000-00-00 00:00:00'): ?>
-										<br><small><span class="text-muted">Due by</span> <strong><?php echo date('d/m/Y', strtotime($ticket->due)); ?></strong></small>
+										<br>
+										<small>
+											<?php if ($ticket->start != '0000-00-00 00:00:00'): ?>
+												<span class="label label-success" title="Start date"><i class="fa fa-clock-o"></i> <?php echo date('d/m/Y', strtotime($ticket->start)); ?></span>
+											<?php endif ?>
+											<span class="label label-warning" title="Due date"><i class="fa fa-clock-o"></i> <?php echo date('d/m/Y', strtotime($ticket->due)); ?></span>
+										</small>
 									<?php endif ?>
 								</p>
 							</a>

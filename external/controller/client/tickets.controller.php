@@ -111,7 +111,7 @@
 			// 	$total = Tickets::count($conditions);
 			// }
 			// $this->view->render('tickets/calendar-page', array('tickets' => $tickets, 'client_id' => $client_id, 'project_id' => $project_id, 'search' => $search, 'page' => $page, 'show' => $show, 'filter' => $filter, 'sort' => $sort, 'total' => $total));
-			$tickets = Tickets::all();
+			$tickets = Tickets::rawWhere( "start != '0000-00-00 00:00:00' AND due != '0000-00-00 00:00:00' AND status = 'Open'" );
 			$events = array();
 			foreach ($tickets as $ticket) {
 				$start = $ticket->start ? $ticket->start : $ticket->created;
@@ -175,8 +175,8 @@
 					# Update ticket
 					$ticket->project_id = $project_id;
 					$ticket->client_id = $client_id;
-					$ticket->start = date( 'Y-m-d', strtotime( str_replace('/', '-', $start) ) );
-					$ticket->due = date( 'Y-m-d', strtotime( str_replace('/', '-', $due) ) );
+					$ticket->start = date( 'Y-m-d H:i:s', strtotime( str_replace('/', '-', $start) ) );
+					$ticket->due = date( 'Y-m-d H:i:s', strtotime( str_replace('/', '-', $due) ) );
 					$ticket->subject = $subject;
 					$ticket->details = $details;
 					$ticket->attachments = serialize($attachments);
@@ -225,8 +225,8 @@
 					$ticket->user_id =		$user->id;
 					$ticket->project_id =	$project_id;
 					$ticket->client_id =	$client_id;
-					$ticket->start =		date( 'Y-m-d', strtotime( str_replace('/', '-', $start) ) );
-					$ticket->due =			date( 'Y-m-d', strtotime( str_replace('/', '-', $due) ) );
+					$ticket->start =		date( 'Y-m-d H:i:s', strtotime( str_replace('/', '-', $start) ) );
+					$ticket->due =			date( 'Y-m-d H:i:s', strtotime( str_replace('/', '-', $due) ) );
 					$ticket->subject =		$subject;
 					$ticket->details =		$details;
 					$ticket->attachments =	serialize($attachments);
