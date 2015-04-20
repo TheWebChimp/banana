@@ -78,7 +78,7 @@
 			$this->registerScript('jquery.cycle', '//cdnjs.cloudflare.com/ajax/libs/jquery.cycle/3.03/jquery.cycle.all.min.js', array('jquery'));
 			$this->registerScript('magnific-popup', '//cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/0.9.9/jquery.magnific-popup.min.js', array('jquery'));
 			$this->registerScript('twitter-bootstrap', '//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/js/bootstrap.min.js', array('jquery'));
-			$this->registerScript('underscore', '//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js', array('underscore'));
+			$this->registerScript('underscore', '//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js');
 			$this->registerScript('backbone', '//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone-min.js');
 			# Default dirs
 			$this->dirs = array(
