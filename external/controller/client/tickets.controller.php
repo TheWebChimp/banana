@@ -111,7 +111,7 @@
 			// 	$total = Tickets::count($conditions);
 			// }
 			// $this->view->render('tickets/calendar-page', array('tickets' => $tickets, 'client_id' => $client_id, 'project_id' => $project_id, 'search' => $search, 'page' => $page, 'show' => $show, 'filter' => $filter, 'sort' => $sort, 'total' => $total));
-			$tickets = Tickets::rawWhere( "start != '0000-00-00 00:00:00' AND due != '0000-00-00 00:00:00' AND status = 'Open'" );
+			$tickets = Tickets::rawWhere( "start != '0000-00-00 00:00:00' AND due != '0000-00-00 00:00:00' AND status = 'Open'", 1, 10000 );
 			$events = array();
 			foreach ($tickets as $ticket) {
 				$start = $ticket->start ? $ticket->start : $ticket->created;

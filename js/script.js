@@ -70,7 +70,7 @@ var banana = Banana({
 						var calendar = $("#tickets-calendar").calendar({
 							tmpl_path: constants.siteUrl + '/parts/calendar/',
 							events_source: function () { return []; },
-							view: 'month'
+							view: 'week'
 						});
 						break;
 				}
